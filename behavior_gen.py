@@ -14,7 +14,7 @@ class SarBehaviorGenerator:
     def performBehaviorFor(self, intent, state):
         action_script = plan(state, [intent], self.ps)
         if action_script:
-            robot.executeActionScript(plan_converter(action_script))
+            self.robot.executeActionScript(plan_converter(action_script))
             self.last_plan = action_script
             return True
         else:

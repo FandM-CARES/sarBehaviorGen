@@ -97,7 +97,7 @@ CONFIRM LEVEL 2 & LEVEL 3;
         (sayTextandPause "Yay! You got it all. You did great! Hooray") 
         (PointandPause default both)))
 
-CONFIRM DEFUALT;
+CONFIRM DEFAULT;
 
 (:method simple-confirm
     :parameters()
@@ -126,7 +126,7 @@ CONFIRM DEFUALT;
 
 
 
-INSTRUCT DEFUALT;
+INSTRUCT DEFAULT;
 
 (:method dont-think-so
     :parameters()
@@ -208,7 +208,7 @@ INSTRUCT DEFUALT;
 )
 
 
-(:method doing-ok-defualt
+(:method doing-ok-default
     :parameters ()
     :task (persist )
     :precondition()
@@ -534,7 +534,7 @@ HESITATION;
     :ordered-subtasks(and
         (looking-around )))
 
-DEFUALT CLAIM LOOK;
+DEFAULT CLAIM LOOK;
 
 (:method claim-look-0
     :parameters ()
@@ -600,7 +600,7 @@ RELEASE TURN;
         (defaultCenter )))
 
 
-DEFUALT RELEASE-TURN;
+DEFAULT RELEASE-TURN;
 
 (:method release-turn0
     :parameters ()
