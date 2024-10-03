@@ -9,40 +9,41 @@
 </head>
 <body>
     <script>
-        
-        // function doAction(action) {
-        //     if (Array.isArray(action)) {
-        //         var payload = {"intent": "Explain1","description": "Testing","actionList":action};
-        //     } else {
-        //         var payload = {"intent": "Explain1","description": "Testing","actionList":[action]};
-        //     }
-
-        //     makeCall(payload);
-        // }
-
-        // function saySomething() {
-        //     var utterance = document.getElementById('misty-say-text').value;
-
-        //     var payload = {"intent": "Explain1","description": "Testing interface","actionList":[{"name": "LookInDirection","args": ["center"]},{"name": "SetEyes","args": ["happy"]},{"name": "SayText","args": [utterance]},{"name": "Pause","args": ["1500"]},{"name": "SetEyes","args": ["default"]},{"name": "LookInDirection","args": ["upperRight"]}]};
-
-        //     makeCall(payload);
-        // }
-
         function doAction(intent) {
             var ip = document.getElementById("misty-robot-ip-address").value
             var event_name = document.getElementById("misty-event-name").value
             var affect = document.getElementById("affectRange").value
             var rapport = document.getElementById("rapportRange").value
             var gaze = document.getElementById("gaze").value
+            var v = document.getElementsByName("verbal")
+
+            for (i = 0; i < v.length; i++) {
+                if (v[i].checked) {
+                    var verbal = v[i].value
+                }
+            }
+            var next = document.getElementById("next_move").value
+            var t = document.getElementsByName("task_state")
+
+            for (j = 0; j < t.length; j++) {
+                if (t[j].checked) {
+                    var task = t[j].value
+                }
+            }
+            var step = document.getElementById("step").value
 
 
             var  data = {
-                "Skill":skill_id,
+                // "Skill":skill_id,
                 "EventName": event_name,
                 "Intent": intent,
                 "Affect": affect,
                 "Rapport": rapport,
-                "Gaze": gaze
+                "Gaze": gaze,
+                "Verbal": verbal,
+                "Next": next,
+                "Task": task,
+                "Step": step
             };
             console.log(data);
             Promise.race([
@@ -62,55 +63,6 @@
             .then(jsonData => console.log(jsonData)); 
         }
 
-        // function startSkill() {
-        //     var ip = document.getElementById("misty-robot-ip-address").value
-
-        //     var skill_id = document.getElementById("misty-skill-id").value
-        //     //"32fad23d-074c-4267-8377-7fd60da380d3"
-        //     //"7d6fe0a1-61b4-4df5-872a-568776310d2f"
-
-        //     var data = {
-        //         "Skill": skill_id
-        //     };
-
-        //     Promise.race([
-        //         fetch('http://' + ip + '/api/skills/start', {
-        //             method: 'POST',
-        //             headers: {
-        //                 "Accept": "application/json",
-        //                 "Content-Type": "application/json"
-        //             },
-        //             body: JSON.stringify(data),
-        //             dataType: "json"
-        //         }),
-        //         new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000))
-        //     ])
-        //         .then(response => response.json())
-        //         .then(jsonData => console.log(jsonData));
-        // }
-
-
-        // Call axios.post(). Pass the URL of the ChangeLED 
-        // endpoint as the first parameter and the data object 
-        // as the second.
-
-        // Use a then() method after calling axios.post(). 
-        // Pass in a callback function to interpret the return 
-        // values of the call and to print a message to the console 
-        // indicating the request's success.
-
-        // Use a catch() method after then(). catch() triggers 
-        // if the promise is rejected. Pass a callback to catch() 
-        // to print any errors to the console.
-        
-        // axios.post("http://" + ip + "/api/led", data)
-        //     .then(function (response) {
-        //         console.log(`ChangeLED was a ${response.data.status}`);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(`There was an error with the request ${error}`);
-        //     });
-
     </script>
     <div>
         Misty's IP Address: <input id="misty-robot-ip-address" value="192.168.1.4">
@@ -121,9 +73,6 @@
         <p></p>
         Misty says: <input id="misty-say-text" value="Testing">
         <p></p>
-        <!-- START
-        <br>
-        <button onclick="startSkill()">Start Skill</button> -->
         <br>
         Intents
         <br>
@@ -152,77 +101,43 @@
         <input type="range" min="0" max="1" value="0" class="slider" id="rapportRange">
         <br>
         <br>
-        <label for="Gaze">Level (between 0 and 1):</label>
-        <input class="button" id="Gaze">
+        <label for="gaze">Gaze Consistecy (between 0 and 1):</label>
+        <input class="button" id="gaze">
         <br>
-        
+        <p>Verbal:</p>
 
+        <form>
+          <input type="radio" id="question" name="verbal" value="Question">
+          <label for="question">Question</label><br>
+          <input type="radio" id="compliment" name="verbal" value="Compliment">
+          <label for="compliment">Compliment</label><br>
+          <input type="radio" id="thankyou" name="verbal" value="Thank_You">
+          <label for="thank_you">Thank You</label>
+        </form> 
+        <br>
+        <label for="next_move">Next Move:</label>
+        <input class="button" id="next_move">
+        <br>
+        <p>Task State:</p>
 
-
-        <!-- <button onclick="saySomething()">Say Something</button>
+        <form>
+          <input type="radio" id="unstarted" name="task_state" value="unstarted">
+          <label for="unstarted">Unstarted</label><br>
+          <input type="radio" id="in_progress" name="task_state" value="in_progress">
+          <label for="in_progress">In Progress</label><br>
+          <input type="radio" id="has_no_error" name="task_state" value="has_no_error">
+          <label for="has_no_error">Has No Error</label><br>
+          <input type="radio" id="just_made_a_mistake" name="task_state" value="just_made_a_mistake">
+          <label for="just_made_a_mistake">Just Made a Mistake</label><br>
+          <input type="radio" id="mistake_escelated" name="task_state" value="mistake_escelated">
+          <label for="mistake_escelated">Mistake Escelated</label><br>
+          <input type="radio" id="nearly_fixed" name="task_state" value="nearly_fixed">
+          <label for="nearly_fixed">Nearly Fixed</label><br>
+          <input type="radio" id="almost_done" name="task_state" value="almost_done">
+          <label for="almost_done">Almost Done</label><br>
+        </form> 
         <br>
+        <label for="step">Step:</label>
+        <input class="button" id="step">
+        <div id = "result"></div>
         <br>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['upperLeft']})">Look Upper Left</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['up']})">Look Up</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['upperRight']})">Look Upper Right</button>
-        <br>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['left']})">Look Left</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['center']})">Look Center</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['right']})">Look Right</button>
-        <br>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['lowerLeft']})">Look Lower Left</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['down']})">Look Down</button>
-        <button onclick="doAction({'name': 'LookInDirection','args': ['lowerRight']})">Look Lower Right</button>
-        <br>
-        <br><button onclick="doAction({'name': 'SetEyes','args': ['happy']})">Happy Eyes</button>
-        <button onclick="doAction({'name': 'SetEyes','args': ['thinking']})">Thinking Eyes</button>
-        <button onclick="doAction({'name': 'SetEyes','args': ['confused']})">Confused Eyes</button>  
-        <br>
-        <button onclick="doAction({'name': 'SetEyes','args': ['scared']})">Scared Eyes</button>  
-        <button onclick="doAction({'name': 'SetEyes','args': ['love']})">Love Eyes</button>  
-        <button onclick="doAction({'name': 'SetEyes','args': ['looking']})">Looking Eyes</button>  
-        <button onclick="doAction({'name': 'SetEyes','args': ['default']})">Default Eyes</button>
-        <br>
-        <br><button onclick="doAction({'name': 'TiltHead','args': ['left', 'small']})">Tilt Head Left</button>
-        <button onclick="doAction({'name': 'TiltHead','args': ['right', 'small']})">Tilt Head Right</button>
-        <br>
-        <br>
-        <button onclick="doAction({'name': 'PointAt','args': ['upwards', 'both']})">Arms up</button>
-        <button onclick="doAction({'name': 'PointAt','args': ['downwards', 'both']})">Arms down</button>
-        <button onclick="doAction({'name': 'PointAt','args': ['default', 'both']})">Arms default</button>
-        <br>
-        <br>
-        Scripts
-        <br>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [1500]}, {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SayText','args': ['haam']}, {'name': 'Pause','args': [2500]}, {'name': 'SetEyes','args': ['thinking']}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Ponder</button>
-        <br>
-        <button onclick="doAction([{'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [1500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Do you have a question']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Do you have a question?</button>
-        <br>
-        <button onclick="doAction([{'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SetEyes','args': ['happy']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Hello.  Welcome.']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Welcome</button>
-        <br>
-        <br>
-        <button onclick="doAction([{'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SetEyes','args': ['happy']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Welcome']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}, {'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['What is your order?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Welcome</button>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SayText','args': ['I\'m sorry, I don\'t understand.']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['thinking']}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Uncomprehendable</button>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SayText','args': ['Yes, that is permissible']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['thinking']}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Permissible</button>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['What is your order?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Order?</button>
-        <button onclick="doAction([{'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SetEyes','args': ['happy']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Thank you for that piece of information.']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['What is your order?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Information</button>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Yes, I am able to do that.']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['What is your order?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Capable</button>
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'SetEyes','args': ['confused']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Please look at the menu.']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['What is your order?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Menu</button>
-        <button onclick="doAction([{'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SetEyes','args': ['happy']}, {'name': 'Pause','args': [500]}, {'name': 'TiltHead','args': ['right', 'small']}, {'name': 'SayText','args': ['Thank you for your order.']}, {'name': 'Pause','args': [2500]}, {'name': 'LookInDirection','args': ['center']}, {'name': 'SayText','args': ['Your order will be ready soon.']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['happy']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Thank you</button>
-        <button onclick="doAction([{'name': 'SetEyes','args': ['happy']}, {'name': 'SayText','args': ['Please step aside while you wait.']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}])">Wait</button>
-
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['down']}, {'name': 'LookInDirection','args': ['lowerLeft']}, {'name': 'LookInDirection','args': ['lowerRight']}, {'name': 'LookInDirection','args': ['lowerLeft']}, {'name': 'LookInDirection','args': ['lowerRight']}, {'name': 'Pause','args': [1500]}, {'name': 'SayText','args': ['That is so sad.']}, {'name': 'SetEyes','args': ['thinking']}])">Handy</button>
-        <button onclick="doAction([{'name': 'SetEyes','args': ['happy']}, {'name': 'SayText','args': ['Welcome to Dee hall.']}, {'name': 'Pause','args': [1500]}, {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'SayText','args': ['What have you eaten today?']}])">Dhall</button>
-
-        <button onclick="doAction([{'name': 'SayText','args': ['Hello I am weekee, your campus food delivery assistant.  Would you like any snacks?']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['happy']}, {'name': 'LookInDirection','args': ['center']},  {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'Pause','args': [5500]}, {'name': 'SayText','args': ['Here is your order.  Have a nice day.']}])">Vending</button>
-
-        <button onclick="doAction([{'name': 'LookInDirection','args': ['center']}, {'name': 'SetEyes','args': ['happy']}, {'name': 'SayText','args': ['Hi.  Welcome to the gym.  What workout would you like?']}, {'name': 'TiltHead','args': ['left', 'small']}, {'name': 'Pause','args': [1500]}, {'name': 'SetEyes','args': ['default']}, {'name': 'LookInDirection','args': ['center']}, {'name': 'Pause','args': [3500]}, {'name': 'SayText','args': ['Let\'s get started']}])">Gym</button>
- -->
-
-
-
-
-    </div>
-
-</body>
-</html>
