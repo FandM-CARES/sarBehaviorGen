@@ -6,7 +6,7 @@ import sys
 
 class SarBehaviorGenerator:
 
-    def __init__(self, robot, filePaths=['../Behavior_Gen/sarBehaviorGen/models/general.hddl']):
+    def __init__(self, robot, filePaths=['/models/general.hddl']):
         self.robot = robot
         self.init_planner(filePaths)
         self.last_plan = None
@@ -84,8 +84,11 @@ def plan_converter(plan):
 
 def scenario1(state1,ps):
     #Scenario-1 offer-help-question
-    state1.add(["confusion", "early"])
-    state1.add(["level", "l2"])
+    # state1.add(["confusion", "early"])
+    # state1.add(["level", "l2"])
+    state1.add(["affect", "negative"])
+    state1.add(["level", "l4"])
+    state1.add(["rapport","low"])
     return state1, ["inquire", "misty"]
     #return plan(state1, [["inquire", "misty"]], ps)
 
@@ -181,7 +184,7 @@ if __name__ == '__main__':
     #runTest()
     parser = argparse.ArgumentParser()
     parser.add_argument('test', default='test1', nargs='?')
-    parser.add_argument('--file', default=['../Behavior_Gen/sarBehaviorGen/models/general.hddl'], action='append')
+    parser.add_argument('--file', default=['models/general.hddl'], action='append')
     parser.add_argument('--address', default='192.168.1.3')
     parser.add_argument('--interactive', action='store_true')
     parser.add_argument('--nao', action='store_true')

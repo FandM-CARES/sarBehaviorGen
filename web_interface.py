@@ -10,35 +10,57 @@ import robot.social_robot as r
 
 web = Flask(__name__)
 CORS(web)
+generator = None
 
-# @web.route('/behavior_generator', methods = ['POST'])
+@web.route('/start_robot', methods = ['POST'])
 def start_robot():
+    global generator
     # robot = misty.misty_robot.Misty('192.168.1.4')
     robot = r.SocialRobot("127.0.0.1")    
-    file = ['../Behavior_Gen/sarBehaviorGen/models/general.hddl']
-
+    file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/general.hddl']
     generator = behavior_gen.SarBehaviorGenerator(robot, file)
+    if generator != None:
+        return jsonify("Robot Started Successfully!")
+    else:
+       return jsonify("Robot Failed!")
     # robot.startSkill()
-    return generator
 
 @web.route('/behavior_generator', methods = ['POST'])
 def be_gen():
-    generator = start_robot()
+    if generator == None:
+      return jsonify("Robot not Started")
+    
     data = json.loads(request.data)
+
+    affectData = int(data.get('Affect'))
+    if (affectData < 0):
+       affect = "negative"
+    elif (affectData > 0):
+       affect = "positive"
+    else:
+       affect = "neutral"
+    
+    taskState = data.get('Task')
+    print(taskState)
+
     intent = data.get('Intent').get('name')
-    affect = data.get('Affect')
-    task = data.get('Task')
+    level = "l" + str(data.get('Level'))
     verbal = data.get('Verbal')
-    # print(intent)
-    # print(affect)
-    # print(task)
-    # print(verbal)
-    # print(data)
+    rapport = data.get('Rapport')
+    next = data.get('Next')
+    step = data.get('Step')
 
-    state2 = State("test")
-    state2.add(['rapport','low'])
+    state = State("test")
+    state.add(['affect',affect])
+    print(affect)
+    state.add(['taskState',taskState])
+    state.add(['verbal',verbal])
+    state.add(['rapport',rapport])
+    state.add(['next',next])
+    state.add(['step',step])
+    state.add(['level',level])
 
-    generator.performBehaviorFor([intent.lower()],state2)
+    generator.performBehaviorFor([intent.lower()],state)
     
     return jsonify(data)
 

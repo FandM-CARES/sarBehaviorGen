@@ -9,11 +9,28 @@
 </head>
 <body>
     <script>
+        function startSkill() {
+            Promise.race([
+                // fetch('http://' + ip + '/behavior_generator', {
+                fetch("http://127.0.0.1:5000/start_robot", {
+                    method: 'POST',
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000))
+            ])
+            .then(response => response.json())
+            .then(jsonData => console.log(jsonData)); 
+        }
+        
         function doAction(intent) {
             var ip = document.getElementById("misty-robot-ip-address").value
             var event_name = document.getElementById("misty-event-name").value
             var affect = document.getElementById("affectRange").value
             var rapport = document.getElementById("rapportRange").value
+            var level = document.getElementById("levelRange").value
             var gaze = document.getElementById("gaze").value
             var v = document.getElementsByName("verbal")
 
@@ -39,6 +56,7 @@
                 "Intent": intent,
                 "Affect": affect,
                 "Rapport": rapport,
+                "Level": level,
                 "Gaze": gaze,
                 "Verbal": verbal,
                 "Next": next,
@@ -64,6 +82,16 @@
         }
 
     </script>
+    <style> 
+    p2 {
+        font-size: 30px;
+        font-weight: bold;
+    }
+    button {
+        font-size: 18px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    </style>
     <div>
         Misty's IP Address: <input id="misty-robot-ip-address" value="192.168.1.4">
         <p></p>
@@ -74,7 +102,12 @@
         Misty says: <input id="misty-say-text" value="Testing">
         <p></p>
         <br>
+        <button onclick="startSkill()">Start Robot</button>
+        <br>
+        <br>
+        <p2>
         Intents
+        </p2>
         <br>
         <button onclick="doAction({'name': 'Confirm'})">Confirm</button>
         <button onclick="doAction({'name': 'Inquire'})">Inquire</button>
@@ -88,7 +121,9 @@
         <button onclick="doAction({'name': 'Follow Script'})">Follow Scrips</button>
         <br>
         <br>
+        <p2>
         States
+        </p2>
         <br>
         <br>
         <label for="affectRange">Affect (between -1 and 1):</label>
@@ -97,7 +132,7 @@
         <label for="levelRange">Level (between 1 and 4):</label>
         <input type="range" min="1" max="4" value="1" class="slider" id="levelRange">
         <br>
-        <label for="rapportRange">Level (between 0 and 1):</label>
+        <label for="rapportRange">Rapport (between 0 and 1):</label>
         <input type="range" min="0" max="1" value="0" class="slider" id="rapportRange">
         <br>
         <br>
@@ -123,17 +158,17 @@
         <form>
           <input type="radio" id="unstarted" name="task_state" value="unstarted">
           <label for="unstarted">Unstarted</label><br>
-          <input type="radio" id="in_progress" name="task_state" value="in_progress">
+          <input type="radio" id="in_progress" name="task_state" value="in-progress">
           <label for="in_progress">In Progress</label><br>
-          <input type="radio" id="has_no_error" name="task_state" value="has_no_error">
+          <input type="radio" id="has_no_error" name="task_state" value="has-no-error">
           <label for="has_no_error">Has No Error</label><br>
-          <input type="radio" id="just_made_a_mistake" name="task_state" value="just_made_a_mistake">
+          <input type="radio" id="just_made_a_mistake" name="task_state" value="just-made-a-mistake">
           <label for="just_made_a_mistake">Just Made a Mistake</label><br>
-          <input type="radio" id="mistake_escelated" name="task_state" value="mistake_escelated">
+          <input type="radio" id="mistake_escelated" name="task_state" value="mistake-escelated">
           <label for="mistake_escelated">Mistake Escelated</label><br>
-          <input type="radio" id="nearly_fixed" name="task_state" value="nearly_fixed">
+          <input type="radio" id="nearly_fixed" name="task_state" value="nearly-fixed">
           <label for="nearly_fixed">Nearly Fixed</label><br>
-          <input type="radio" id="almost_done" name="task_state" value="almost_done">
+          <input type="radio" id="almost_done" name="task_state" value="almost-done">
           <label for="almost_done">Almost Done</label><br>
         </form> 
         <br>
