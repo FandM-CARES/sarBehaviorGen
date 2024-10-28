@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Reference a link to a CDN for Axios here -->
 	<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    Access-Control-Allow-Origin: https://192.168.1.4
 </head>
 <body>
     <script>
         function startSkill() {
+            // var ip = '192.168.1.4'
             Promise.race([
-                // fetch('http://' + ip + '/behavior_generator', {
-                fetch("http://127.0.0.1:5000/start_robot", {
+                // fetch('http://' + ip + '/start_robot', {
+                    fetch("http://127.0.0.1:5000/start_robot", {
                     method: 'POST',
                     headers: {
                         "Accept": "application/json",

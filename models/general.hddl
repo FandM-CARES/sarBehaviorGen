@@ -104,7 +104,7 @@ CONFIRM DEFAULT;
     :task(confirm )
     :precondition()
     :ordered-subtasks(and
-        (Take-turn)
+        (take-turn)
         (Nod )
         (SayText "That's right") 
         (Pause 300)

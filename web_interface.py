@@ -4,9 +4,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
 import behavior_gen
-# import misty.misty_robot
+import misty.misty_robot
 import robot.social_robot as r
-
 
 web = Flask(__name__)
 CORS(web)
@@ -15,18 +14,20 @@ generator = None
 @web.route('/start_robot', methods = ['POST'])
 def start_robot():
     global generator
-    # robot = misty.misty_robot.Misty('192.168.1.4')
-    robot = r.SocialRobot("127.0.0.1")    
-    file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/general.hddl']
+    robot = misty.misty_robot.Misty('192.168.1.4')
+    robot.startSkill()
+   #  robot = r.SocialRobot("127.0.0.1")    
+    file = ['/home/zlocher/Documents/Computer Science Files/Research/Behavior_Gen/sarBehaviorGen/models/general.hddl']
     generator = behavior_gen.SarBehaviorGenerator(robot, file)
     if generator != None:
         return jsonify("Robot Started Successfully!")
     else:
        return jsonify("Robot Failed!")
-    # robot.startSkill()
+    
 
 @web.route('/behavior_generator', methods = ['POST'])
 def be_gen():
+    start_robot()
     if generator == None:
       return jsonify("Robot not Started")
     
