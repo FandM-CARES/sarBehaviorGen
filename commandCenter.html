@@ -10,8 +10,9 @@
 <body>
     <script>
         function startSkill() {
+            var ip = document.getElementById("misty-robot-ip-address").value
             Promise.race([
-                // fetch('http://' + ip + '/behavior_generator', {
+                // fetch('http://' + ip + '/start_robot', {
                 fetch("http://127.0.0.1:5000/start_robot", {
                     method: 'POST',
                     headers: {
@@ -31,7 +32,24 @@
             var affect = document.getElementById("affectRange").value
             var rapport = document.getElementById("rapportRange").value
             var level = document.getElementById("levelRange").value
-            var gaze = document.getElementById("gaze").value
+            var next = document.getElementById("next_move").value
+            var step = document.getElementById("step").value
+            var sc = document.getElementsByName("script")
+
+            for (i = 0; i < sc.length; i++) {
+                if (sc[i].checked) {
+                    var script = sc[i].value
+                }
+            }
+
+            var g = document.getElementsByName("gaze")
+
+            for (i = 0; i < g.length; i++) {
+                if (g[i].checked) {
+                    var gaze = g[i].value
+                }
+            }
+
             var v = document.getElementsByName("verbal")
 
             for (i = 0; i < v.length; i++) {
@@ -39,7 +57,6 @@
                     var verbal = v[i].value
                 }
             }
-            var next = document.getElementById("next_move").value
             var t = document.getElementsByName("task_state")
 
             for (j = 0; j < t.length; j++) {
@@ -47,8 +64,6 @@
                     var task = t[j].value
                 }
             }
-            var step = document.getElementById("step").value
-
 
             var  data = {
                 // "Skill":skill_id,
@@ -61,7 +76,8 @@
                 "Verbal": verbal,
                 "Next": next,
                 "Task": task,
-                "Step": step
+                "Step": step,
+                "Script": script
             };
             console.log(data);
             Promise.race([
@@ -93,7 +109,7 @@
     }
     </style>
     <div>
-        Misty's IP Address: <input id="misty-robot-ip-address" value="192.168.1.4">
+        Misty's IP Address: <input id="misty-robot-ip-address" value="192.168.1.5">
         <p></p>
         Misty's Skill ID: <input id="misty-skill-id" value="7d6fe0a1-61b4-4df5-872a-568776310d2f">
         <p></p>
@@ -118,7 +134,7 @@
         <button onclick="doAction({'name': 'Persist'})">Persist</button>
         <br>
         <button onclick="doAction({'name': 'Reconcile Beliefs'})">Reconcile Beliefs</button>
-        <button onclick="doAction({'name': 'Follow Script'})">Follow Scrips</button>
+        <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button>
         <br>
         <br>
         <p2>
@@ -136,8 +152,16 @@
         <input type="range" min="0" max="1" value="0" class="slider" id="rapportRange">
         <br>
         <br>
-        <label for="gaze">Gaze Consistecy (between 0 and 1):</label>
-        <input class="button" id="gaze">
+        <p>Gaze:</p>
+
+        <form>
+          <input type="radio" id="task" name="gaze" value="Task">
+          <label for="Task">Task</label><br>
+          <input type="radio" id="robot" name="gaze" value="Robot">
+          <label for="Robot">Robot</label><br>
+          <input type="radio" id="away" name="gaze" value="Away">
+          <label for="Away">Away</label>
+        </form> 
         <br>
         <p>Verbal:</p>
 
@@ -176,3 +200,12 @@
         <input class="button" id="step">
         <div id = "result"></div>
         <br>
+
+        <form>
+            <input type="radio" id="intro" name="script" value="intro">
+            <label for="intro">Introduction</label><br>
+            <input type="radio" id="color" name="script" value="color">
+            <label for="color">Color</label><br>
+            <input type="radio" id="game" name="script" value="game">
+            <label for="game">Game</label>
+          </form> 
