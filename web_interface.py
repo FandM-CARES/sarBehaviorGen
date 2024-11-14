@@ -7,7 +7,6 @@ import behavior_gen
 import misty.misty_robot
 import robot.social_robot as r
 
-
 web = Flask(__name__)
 CORS(web)
 generator = None
