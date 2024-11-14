@@ -60,7 +60,7 @@ def be_gen():
    state.add(['verbal',verbal])
    state.add(['rapport',rapport])
    state.add(['level',level])
-   state.add([next])
+   state.add(next)
    print(state)
 
    '''
@@ -111,4 +111,6 @@ To do list:
     can we change reconcile belief in misty.hddl?
     can we add everything from general.hddl to misty.hddl?
     
+    rename "name" to intent,
+    add more json objects to doaction's parameter
 '''
