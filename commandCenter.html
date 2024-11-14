@@ -19,6 +19,8 @@
                         "Accept": "application/json",
                         "Content-Type": "application/json"
                     },
+                    body: JSON.stringify(ip),
+                    dataType: "json"
                 }),
                 new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000))
             ])

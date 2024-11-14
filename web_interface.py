@@ -15,14 +15,13 @@ generator = None
 @web.route('/start_robot', methods = ['POST'])
 def start_robot():
    global generator
-
-   # robot = misty.misty_robot.Misty('192.168.1.5')
-   # robot.startSkill()
-
-   robot = r.SocialRobot("127.0.0.1")    
-   file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/general.hddl','/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
+   ip = json.loads(request.data)
+   robot = misty.misty_robot.Misty(ip)
+   # robot = r.SocialRobot("127.0.0.1")
+       
+   file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
    generator = behavior_gen.SarBehaviorGenerator(robot, file)
-   # robot.startSkill()
+   robot.startSkill()
    
    if generator != None:
         return jsonify("Robot Started Successfully!")
@@ -61,9 +60,10 @@ def be_gen():
    state.add(['affect',affect])
    state.add(['taskState',taskState])
    state.add(['verbal',verbal])
-   state.add(['rapport',rapport])
-   state.add(['level',level])
-   state.add(next)
+   state.add(['rapport',"low"])
+   state.add(['level','l4'])
+   state.add(['needsToBe', 'this piece', 'connect-corner', 'that piece'])
+   print(state)
 
    '''
    How to change the piece name and direction
@@ -71,6 +71,7 @@ def be_gen():
    state.add(['step',step])
 
    if intent == "Follow Script":
+      intent == "followScript"
       if script == "intro":
          for i in range(1,6):
             state.add(['script',script + str(i+1)])

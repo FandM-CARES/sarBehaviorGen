@@ -432,7 +432,7 @@ INSTRUCT LEVEL 4;
     :precondition (and 
         (rapport low)
         (needsToBe ?piece swap ?piece2)
-        (level l4))
+        (level l4)) 
     :ordered-subtasks(and
         (take-turn )
         (remove ?piece)
