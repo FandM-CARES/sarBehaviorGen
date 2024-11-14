@@ -50,10 +50,9 @@ def be_gen():
    verbal = data.get('Verbal')
    rapport = data.get('Rapport')
    next = str(data.get('Next')).split(" ")
-   print(next)
    level = "l" + str(data.get('Level'))
    step = data.get('Step')
-   script = data.get('Script').split(" ")
+   # script = data.get('Script').split(" ")
 
    state = State("test")
    state.add(['affect',affect])
@@ -69,24 +68,24 @@ def be_gen():
    '''
    state.add(['step',step])
 
-   if intent == "Follow Script":
-      intent == "followScript"
-      if script == "intro":
-         for i in range(1,6):
-            state.add(['script',script + str(i+1)])
-            generator.performBehaviorFor([intent.lower()],state)
-            state.remove(['script',script + str(i+1)])
-      elif script == "color":
-         for i in range(6,12):
-            state.add(['script',script + str(i)])
-            generator.performBehaviorFor([intent.lower()],state)
-            state.remove(['script',script + str(i)])
-      elif script == "game":
-         for i in range(12,19):
-            state.add(['script',script + str(i)])
-            generator.performBehaviorFor([intent.lower()],state)
-            state.remove(['script',script + str(i)])
-      return jsonify(data)
+   # if intent == "Follow Script":
+   #    intent == "followScript"
+   #    if script == "intro":
+   #       for i in range(1,6):
+   #          state.add(['script',script + str(i+1)])
+   #          generator.performBehaviorFor([intent.lower()],state)
+   #          state.remove(['script',script + str(i+1)])
+   #    elif script == "color":
+   #       for i in range(6,12):
+   #          state.add(['script',script + str(i)])
+   #          generator.performBehaviorFor([intent.lower()],state)
+   #          state.remove(['script',script + str(i)])
+   #    elif script == "game":
+   #       for i in range(12,19):
+   #          state.add(['script',script + str(i)])
+   #          generator.performBehaviorFor([intent.lower()],state)
+   #          state.remove(['script',script + str(i)])
+   #    return jsonify(data)
    
    generator.performBehaviorFor([intent.lower()],state)
     
