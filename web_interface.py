@@ -15,12 +15,12 @@ generator = None
 def start_robot():
    global generator
    ip = json.loads(request.data)
-   robot = misty.misty_robot.Misty(ip)
-   # robot = r.SocialRobot("127.0.0.1")
+   # robot = misty.misty_robot.Misty(ip)
+   robot = r.SocialRobot("127.0.0.1")
        
    file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
    generator = behavior_gen.SarBehaviorGenerator(robot, file)
-   robot.startSkill()
+   # robot.startSkill()
    
    if generator != None:
         return jsonify("Robot Started Successfully!")
@@ -53,15 +53,15 @@ def be_gen():
    print(next)
    level = "l" + str(data.get('Level'))
    step = data.get('Step')
-   script = data.get('Script')
+   script = data.get('Script').split(" ")
 
    state = State("test")
    state.add(['affect',affect])
    state.add(['taskState',taskState])
    state.add(['verbal',verbal])
-   state.add(['rapport',"low"])
-   state.add(['level','l4'])
-   state.add(['needsToBe', 'this piece', 'connect-corner', 'that piece'])
+   state.add(['rapport',rapport])
+   state.add(['level',level])
+   state.add([next])
    print(state)
 
    '''
@@ -108,5 +108,8 @@ To do list:
     new function to start engine - startskill + initiate robot  (done? I think it's calling start repeatedly still though)
 
     Update UI - nextMove, step(stepName)
+
+    can we change reconcile belief in misty.hddl?
+    can we add everything from general.hddl to misty.hddl?
     
 '''

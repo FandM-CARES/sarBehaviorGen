@@ -30,20 +30,20 @@
         }
         
         function doAction(intent) {
-            var ip = document.getElementById("misty-robot-ip-address").value
-            var event_name = document.getElementById("misty-event-name").value
+            // var ip = document.getElementById("misty-robot-ip-address").value
+            // var event_name = document.getElementById("misty-event-name").value
             var affect = document.getElementById("affectRange").value
             var rapport = document.getElementById("rapportRange").value
             var level = document.getElementById("levelRange").value
             var next = document.getElementById("next_move").value
             var step = document.getElementById("step").value
-            var sc = document.getElementsByName("script")
+            // var sc = document.getElementsByName("script")
 
-            for (i = 0; i < sc.length; i++) {
-                if (sc[i].checked) {
-                    var script = sc[i].value
-                }
-            }
+            // for (i = 0; i < sc.length; i++) {
+            //     if (sc[i].checked) {
+            //         var script = sc[i].value
+            //     }
+            // }
 
             var g = document.getElementsByName("gaze")
 
@@ -70,7 +70,7 @@
 
             var  data = {
                 // "Skill":skill_id,
-                "EventName": event_name,
+                // "EventName": event_name,
                 "Intent": intent,
                 "Affect": affect,
                 "Rapport": rapport,
@@ -80,7 +80,7 @@
                 "Next": next,
                 "Task": task,
                 "Step": step,
-                "Script": script
+                // "Script": script
             };
             console.log(data);
             Promise.race([
@@ -110,6 +110,24 @@
         font-size: 18px;
         font-family: 'Times New Roman', Times, serif;
     }
+    #introButton {
+        display : none;
+    }
+    #gameButton {
+        display : none;
+    }
+    #colorButton {
+        display : none;
+    }
+    .intro {
+        display : none;
+    }
+    .color {
+        display : none;
+    }
+    .game {
+        display : none;
+    }
     </style>
     <div>
         Misty's IP Address: <input id="misty-robot-ip-address" value="192.168.1.5">
@@ -136,9 +154,35 @@
         <button onclick="doAction({'name': 'Social'})">Social</button>
         <button onclick="doAction({'name': 'Persist'})">Persist</button>
         <br>
-        <button onclick="doAction({'name': 'Reconcile Beliefs'})">Reconcile Beliefs</button>
-        <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button>
+        <button onclick="doAction({'name': 'reconcileBeliefs'})">Reconcile Beliefs</button>
+        <!-- <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button> -->
+        <button onclick="showFollowScriptButton()">Follow Scripts</button>
         <br>
+        <br>
+        <button id="introButton" onclick="showIntroScripts()">Introduction</button>
+        <button id="colorButton" onclick="showColorScripts()">Color</button>
+        <button id="gameButton" onclick="showGameScripts()">Game</button>
+        <br>
+        <button id="introscript1" class = "intro" onclick="doAction({'name': 'script intro 1'})">Script 1</button>
+        <button id="introscript2" class = "intro" onclick="doAction({'name': 'script intro 2'})">Script 2</button>
+        <button id="introscript3" class = "intro" onclick="doAction({'name': 'script intro 3'})">Script 3</button>
+        <button id="introscript4" class = "intro" onclick="doAction({'name': 'script intro 4'})">Script 4</button>
+        <button id="introscript5" class = "intro" onclick="doAction({'name': 'script intro 5'})">Script 5</button>
+
+        <button id="colorscript1" class = "color" onclick="doAction({'name': 'script intro 6'})">Script 6</button>
+        <button id="colorscript2" class = "color" onclick="doAction({'name': 'script intro 7'})">Script 7</button>
+        <button id="colorscript3" class = "color" onclick="doAction({'name': 'script intro 8'})">Script 8</button>
+        <button id="colorscript4" class = "color" onclick="doAction({'name': 'script intro 9'})">Script 9</button>
+        <button id="colorscript5" class = "color" onclick="doAction({'name': 'script intro 10'})">Script 10</button>
+        <button id="colorscript6" class = "color" onclick="doAction({'name': 'script intro 11'})">Script 11</button>
+
+        <button id="gamescript1" class = "game" onclick="doAction({'name': 'script intro 12'})">Script 12</button>
+        <button id="gamescript2" class = "game" onclick="doAction({'name': 'script intro 13'})">Script 13</button>
+        <button id="gamescript3" class = "game" onclick="doAction({'name': 'script intro 14'})">Script 14</button>
+        <button id="gamescript4" class = "game" onclick="doAction({'name': 'script intro 15'})">Script 15</button>
+        <button id="gamescript5" class = "game" onclick="doAction({'name': 'script intro 16'})">Script 16</button>
+        <button id="gamescript6" class = "game" onclick="doAction({'name': 'script intro 17'})">Script 17</button>
+        <button id="gamescript7" class = "game" onclick="doAction({'name': 'script intro 18'})">Script 18</button>
         <br>
         <p2>
         States
@@ -185,18 +229,39 @@
         <form>
           <input type="radio" id="unstarted" name="task_state" value="unstarted">
           <label for="unstarted">Unstarted</label><br>
+
           <input type="radio" id="in_progress" name="task_state" value="in-progress">
           <label for="in_progress">In Progress</label><br>
-          <input type="radio" id="has_no_error" name="task_state" value="has-no-error">
-          <label for="has_no_error">Has No Error</label><br>
-          <input type="radio" id="just_made_a_mistake" name="task_state" value="just-made-a-mistake">
-          <label for="just_made_a_mistake">Just Made a Mistake</label><br>
-          <input type="radio" id="mistake_escelated" name="task_state" value="mistake-escelated">
-          <label for="mistake_escelated">Mistake Escelated</label><br>
-          <input type="radio" id="nearly_fixed" name="task_state" value="nearly-fixed">
-          <label for="nearly_fixed">Nearly Fixed</label><br>
+
+          <input type="radio" id="close" name="task_state" value="has-no-close">
+          <label for="close">Close</label><br>
+
+          <input type="radio" id="error" name="task_state" value="error">
+          <label for="no_error">Error</label><br>
+
+          <input type="radio" id="no_error" name="task_state" value="no_error">
+          <label for="no_error">No Error</label><br>
+
+          <input type="radio" id="not_touching" name="task_state" value="not_touching">
+          <label for="not_touching">Not Touching</label><br>
+
+          <input type="radio" id="not_flat" name="task_state" value="not_flat">
+          <label for="not_flat">Not Flat</label><br>
+
+          <input type="radio" id="not_flipped" name="task_state" value="not_flipped">
+          <label for="not_flipped">Not Flipped</label><br>
+
+          <input type="radio" id="on-paper" name="task_state" value="on-paper">
+          <label for="on-paper">On Paper</label><br>
+          
+          <input type="radio" id="missingPiece" name="task_state" value="missingPiece">
+          <label for="missingPiece">Missing Piece</label><br>
+
           <input type="radio" id="almost_done" name="task_state" value="almost-done">
           <label for="almost_done">Almost Done</label><br>
+
+          <input type="radio" id="done" name="task_state" value="done">
+          <label for="done">Done</label><br>
         </form> 
         <br>
         <label for="step">Step:</label>
@@ -212,3 +277,49 @@
             <input type="radio" id="game" name="script" value="game">
             <label for="game">Game</label>
           </form> 
+
+
+          <!-- <button id="script1">Script 1</button>
+          <button id="script2">Script 2</button>
+          <button id="script3">Script 3</button>
+          <button id="script4">Script 4</button>
+          <button id="script5">Script 5</button>
+          <button id="script6">Script 6</button> -->
+      
+          <script>
+            function showFollowScriptButton() {
+                document.getElementById("introButton").style.display = "inline-block";
+                document.getElementById("colorButton").style.display = "inline-block";
+                document.getElementById("gameButton").style.display = "inline-block";
+            }
+              function showIntroScripts() {
+                  // Make the second button visible
+                  document.getElementById("introButton").style.display = "none";
+                  document.getElementById("introscript1").style.display = "inline-block";
+                  document.getElementById("introscript2").style.display = "inline-block";
+                  document.getElementById("introscript3").style.display = "inline-block";
+                  document.getElementById("introscript4").style.display = "inline-block";
+                  document.getElementById("introscript5").style.display = "inline-block";
+              }
+              function showColorScripts() {
+                  // Make the second button visible
+                  document.getElementById("colorButton").style.display = "none";
+                  document.getElementById("colorscript1").style.display = "inline-block";
+                  document.getElementById("colorscript2").style.display = "inline-block";
+                  document.getElementById("colorscript3").style.display = "inline-block";
+                  document.getElementById("colorscript4").style.display = "inline-block";
+                  document.getElementById("colorscript5").style.display = "inline-block";
+                  document.getElementById("colorscript6").style.display = "inline-block";
+              }
+              function showGameScripts() {
+                  // Make the second button visible
+                  document.getElementById("gameButton").style.display = "none";
+                  document.getElementById("gamescript1").style.display = "inline-block";
+                  document.getElementById("gamescript2").style.display = "inline-block";
+                  document.getElementById("gamescript3").style.display = "inline-block";
+                  document.getElementById("gamescript4").style.display = "inline-block";
+                  document.getElementById("gamescript5").style.display = "inline-block";
+                  document.getElementById("gamescript6").style.display = "inline-block";
+                  document.getElementById("gamescript7").style.display = "inline-block";
+              }
+          </script>
