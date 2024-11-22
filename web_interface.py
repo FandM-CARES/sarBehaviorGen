@@ -17,8 +17,8 @@ def start_robot():
    ip = json.loads(request.data)
    # robot = misty.misty_robot.Misty(ip)
    robot = r.SocialRobot("127.0.0.1")
-       
-   file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
+   # sarBehaviorGen/models/misty.hddl
+   file = ['models/misty.hddl']
    generator = behavior_gen.SarBehaviorGenerator(robot, file)
    # robot.startSkill()
    
@@ -113,4 +113,10 @@ To do list:
     
     rename "name" to intent,
     add more json objects to doaction's parameter
-'''
+    changes on next move - less typing, guided buttons
+    Followscript & reconcile belief
+    demo - live demo -> video, what do in demo? :)
+
+    When pressing button, record previous action -> recommend next action for script
+    --> keep rotating & rotate little -> 1 option with scale for how much more they should rotate
+    '''

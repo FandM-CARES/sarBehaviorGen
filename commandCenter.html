@@ -10,6 +10,8 @@
 </head>
 <body>
     <script>
+        var pickedPieces = []
+        var numPicked = 0
         function startSkill() {
             var ip = document.getElementById("misty-robot-ip-address").value
             Promise.race([
@@ -100,6 +102,74 @@
             .then(jsonData => console.log(jsonData)); 
         }
 
+        function showFollowScriptButton() {
+            var followScriptButtons = document.getElementById('followScriptButton');
+            var introScriptButtons = document.getElementById('intro');
+            var colorScriptButtons = document.getElementById('color');
+            var gameScriptButtons = document.getElementById('game');
+            
+            // if (document.getElementById("introButton").style.display == "none" || document.getElementById("introButton").style.display == "") {
+            followScriptButtons.style.display = followScriptButtons.style.display === 'none' || followScriptButtons.style.display === '' ? 'block' : 'none';
+            introScriptButtons.style.display = 'none';
+            colorScriptButtons.style.display = 'none';
+            gameScriptButtons.style.display = 'none';
+        }
+
+        function showIntroScripts() {
+            var introScriptButtons = document.getElementById('intro');
+            introScriptButtons.style.display = introScriptButtons.style.display === 'none' || introScriptButtons.style.display === '' ? 'block' : 'none';
+        }
+        function showColorScripts() {
+            var colorScriptButtons = document.getElementById('color');
+            colorScriptButtons.style.display = colorScriptButtons.style.display === 'none' || colorScriptButtons.style.display === '' ? 'block' : 'none';
+        }
+        function showGameScripts() {
+            var gameScriptButtons = document.getElementById('game');
+            gameScriptButtons.style.display = gameScriptButtons.style.display === 'none' || gameScriptButtons.style.display === '' ? 'block' : 'none';
+        }
+        function showNextSteps() {
+            var pieces = document.getElementById("choosePieces");
+            pieces.style.display = pieces.style.display === "none" || pieces.style.display === "" ? "block" : "none";
+            if (numPicked != 0) {
+                for (i = 0; i < pickedPieces.length; i++) {
+                    document.getElementById(pickedPieces[i]).style.border = "";
+                }
+                pickedPieces = []
+                numPicked = 0
+            }
+        }
+        function highlight(img) {
+            var id = img.id;
+            if (numPicked == 2) {
+                numPicked = 0
+                document.getElementById(pickedPieces[0]).style.border = "";
+                document.getElementById(pickedPieces[1]).style.border = "";
+                pickedPieces = []
+            }
+            else if (pickedPieces.includes(id)) {
+                return;
+            }
+            else if (numPicked == 1) {
+                document.getElementById(id).style.border = "12px solid coral";
+                numPicked = pickedPieces.push(id);
+                return;
+            }
+            document.getElementById(id).style.border = "12px solid cornflowerblue";
+            numPicked = pickedPieces.push(id);
+
+        }
+        function next() {
+
+            if (numPicked == 0) {
+                
+            }
+            else if (numPicked == 1) {
+
+            }
+            else if (numPicked == 2) {
+
+            }
+        }
     </script>
     <style> 
     p2 {
@@ -110,23 +180,40 @@
         font-size: 18px;
         font-family: 'Times New Roman', Times, serif;
     }
-    #introButton {
+    #followScriptButton {
         display : none;
     }
-    #gameButton {
+    #intro {
         display : none;
     }
-    #colorButton {
+    #color {
+        display : none;
+
+    }
+    #game {
         display : none;
     }
-    .intro {
+    #choosePieces {
         display : none;
     }
-    .color {
-        display : none;
+    img {
+        width: 128px;
+        height: 128px;
     }
-    .game {
-        display : none;
+    #moves {
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 70px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        padding: 40px;
+        color: black;
+        text-decoration: none;
+        display: block;
+    }
+    #dropdown {
+        position: relative;
+        display: inline-block;
     }
     </style>
     <div>
@@ -150,39 +237,74 @@
         <button onclick="doAction({'name': 'Inquire'})">Inquire</button>
         <button onclick="doAction({'name': 'Inform'})">Inform</button>
         <br>
-        <button onclick="doAction({'name': 'Instruct'})">Instruct</button>
+        <button onclick="showNextSteps()">Instruct</button>
         <button onclick="doAction({'name': 'Social'})">Social</button>
         <button onclick="doAction({'name': 'Persist'})">Persist</button>
         <br>
-        <button onclick="doAction({'name': 'reconcileBeliefs'})">Reconcile Beliefs</button>
+        <button onclick="doAction({'name': 'reconcileBelief'})">Reconcile Beliefs</button>
         <!-- <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button> -->
         <button onclick="showFollowScriptButton()">Follow Scripts</button>
-        <br>
-        <br>
+
+        <div id = "followScriptButton">
         <button id="introButton" onclick="showIntroScripts()">Introduction</button>
         <button id="colorButton" onclick="showColorScripts()">Color</button>
         <button id="gameButton" onclick="showGameScripts()">Game</button>
+        </div>
         <br>
-        <button id="introscript1" class = "intro" onclick="doAction({'name': 'script intro 1'})">Script 1</button>
-        <button id="introscript2" class = "intro" onclick="doAction({'name': 'script intro 2'})">Script 2</button>
-        <button id="introscript3" class = "intro" onclick="doAction({'name': 'script intro 3'})">Script 3</button>
-        <button id="introscript4" class = "intro" onclick="doAction({'name': 'script intro 4'})">Script 4</button>
-        <button id="introscript5" class = "intro" onclick="doAction({'name': 'script intro 5'})">Script 5</button>
-
-        <button id="colorscript1" class = "color" onclick="doAction({'name': 'script intro 6'})">Script 6</button>
-        <button id="colorscript2" class = "color" onclick="doAction({'name': 'script intro 7'})">Script 7</button>
-        <button id="colorscript3" class = "color" onclick="doAction({'name': 'script intro 8'})">Script 8</button>
-        <button id="colorscript4" class = "color" onclick="doAction({'name': 'script intro 9'})">Script 9</button>
-        <button id="colorscript5" class = "color" onclick="doAction({'name': 'script intro 10'})">Script 10</button>
-        <button id="colorscript6" class = "color" onclick="doAction({'name': 'script intro 11'})">Script 11</button>
-
-        <button id="gamescript1" class = "game" onclick="doAction({'name': 'script intro 12'})">Script 12</button>
-        <button id="gamescript2" class = "game" onclick="doAction({'name': 'script intro 13'})">Script 13</button>
-        <button id="gamescript3" class = "game" onclick="doAction({'name': 'script intro 14'})">Script 14</button>
-        <button id="gamescript4" class = "game" onclick="doAction({'name': 'script intro 15'})">Script 15</button>
-        <button id="gamescript5" class = "game" onclick="doAction({'name': 'script intro 16'})">Script 16</button>
-        <button id="gamescript6" class = "game" onclick="doAction({'name': 'script intro 17'})">Script 17</button>
-        <button id="gamescript7" class = "game" onclick="doAction({'name': 'script intro 18'})">Script 18</button>
+        <div id = script>
+            <div id = "intro">
+                <button id="introscript1" class = "intro" onclick="doAction({'name': 'script intro 1'})">Script 1</button>
+                <button id="introscript2" class = "intro" onclick="doAction({'name': 'script intro 2'})">Script 2</button>
+                <button id="introscript3" class = "intro" onclick="doAction({'name': 'script intro 3'})">Script 3</button>
+                <button id="introscript4" class = "intro" onclick="doAction({'name': 'script intro 4'})">Script 4</button>
+                <button id="introscript5" class = "intro" onclick="doAction({'name': 'script intro 5'})">Script 5</button>
+            </div>
+            <br>
+            <div id = "color">
+                <button id="colorscript1" class = "color" onclick="doAction({'name': 'script intro 6'})">Script 6</button>
+                <button id="colorscript2" class = "color" onclick="doAction({'name': 'script intro 7'})">Script 7</button>
+                <button id="colorscript3" class = "color" onclick="doAction({'name': 'script intro 8'})">Script 8</button>
+                <button id="colorscript4" class = "color" onclick="doAction({'name': 'script intro 9'})">Script 9</button>
+                <button id="colorscript5" class = "color" onclick="doAction({'name': 'script intro 10'})">Script 10</button>
+                <button id="colorscript6" class = "color" onclick="doAction({'name': 'script intro 11'})">Script 11</button>
+            </div>
+            <br>
+            <div id = "game">
+                <button id="gamescript1" class = "game" onclick="doAction({'name': 'script intro 12'})">Script 12</button>
+                <button id="gamescript2" class = "game" onclick="doAction({'name': 'script intro 13'})">Script 13</button>
+                <button id="gamescript3" class = "game" onclick="doAction({'name': 'script intro 14'})">Script 14</button>
+                <button id="gamescript4" class = "game" onclick="doAction({'name': 'script intro 15'})">Script 15</button>
+                <button id="gamescript5" class = "game" onclick="doAction({'name': 'script intro 16'})">Script 16</button>
+                <button id="gamescript6" class = "game" onclick="doAction({'name': 'script intro 17'})">Script 17</button>
+                <button id="gamescript7" class = "game" onclick="doAction({'name': 'script intro 18'})">Script 18</button>
+            </div>
+        </div>
+        <div id = choosePieces>
+            <img src="pictures/BlueSmallTriangle.PNG" alt="Smile" id = "BlueSmallTriangle" onclick = highlight(this)>
+            <img src="pictures/GreenLargeTriangle.PNG" alt="Smile" id = "GreenLargeTriangle" onclick = highlight(this)>
+            <img src="pictures/OrangeLargeTriangle.PNG" alt="Smile" id = "OrangeLargeTriangle" onclick = highlight(this)>
+            <img src="pictures/PinkSmallTriangle.PNG" alt="Smile" id = "PinkSmallTriangle" onclick = highlight(this)>
+            <img src="pictures/Purple.PNG" alt="Smile" id = "Purple" onclick = highlight(this)>
+            <img src="pictures/RedMediumTriangle.PNG" alt="Smile" id = "RedMediumTriangle" onclick = highlight(this)>
+            <img src="pictures/YellowSquare.PNG" alt="Smile" id = "YellowSquare" onclick = highlight(this)>
+            <img src="SmileyFacePink.png" alt="Smile" id = "SmileyFacePink" onclick = highlight(this)>
+        </div>
+        <div id = "dropdown">
+            <button id = "next" onclick= "next()">Next</button>
+            <!-- https://www.w3schools.com/howto/howto_js_dropdown.asp -->
+            <br>
+            <select id = "moves">
+                <option id = "info" onclick= "getInfo()">Info</option>
+                <option id = "rotate" onclick= "getInfo()">Rotate X</option>
+                <option id = "flip" onclick= "getInfo()">Flip X</option>
+                <option id = "missing" onclick= "getInfo()">Missing X</option>
+                <option id = "flip" onclick= "getInfo()">Rotate X</option>
+                <option id = "remove" onclick= "getInfo()">Remove X</option>
+                <option id = "move" onclick= "getInfo()">Move X</option>
+                <option id = "slide" onclick= "getInfo()">Slide X</option>
+                <option id = "find" onclick= "getInfo()">Find X</option>
+            </select>
+        </div>
         <br>
         <p2>
         States
@@ -277,49 +399,3 @@
             <input type="radio" id="game" name="script" value="game">
             <label for="game">Game</label>
           </form> 
-
-
-          <!-- <button id="script1">Script 1</button>
-          <button id="script2">Script 2</button>
-          <button id="script3">Script 3</button>
-          <button id="script4">Script 4</button>
-          <button id="script5">Script 5</button>
-          <button id="script6">Script 6</button> -->
-      
-          <script>
-            function showFollowScriptButton() {
-                document.getElementById("introButton").style.display = "inline-block";
-                document.getElementById("colorButton").style.display = "inline-block";
-                document.getElementById("gameButton").style.display = "inline-block";
-            }
-              function showIntroScripts() {
-                  // Make the second button visible
-                  document.getElementById("introButton").style.display = "none";
-                  document.getElementById("introscript1").style.display = "inline-block";
-                  document.getElementById("introscript2").style.display = "inline-block";
-                  document.getElementById("introscript3").style.display = "inline-block";
-                  document.getElementById("introscript4").style.display = "inline-block";
-                  document.getElementById("introscript5").style.display = "inline-block";
-              }
-              function showColorScripts() {
-                  // Make the second button visible
-                  document.getElementById("colorButton").style.display = "none";
-                  document.getElementById("colorscript1").style.display = "inline-block";
-                  document.getElementById("colorscript2").style.display = "inline-block";
-                  document.getElementById("colorscript3").style.display = "inline-block";
-                  document.getElementById("colorscript4").style.display = "inline-block";
-                  document.getElementById("colorscript5").style.display = "inline-block";
-                  document.getElementById("colorscript6").style.display = "inline-block";
-              }
-              function showGameScripts() {
-                  // Make the second button visible
-                  document.getElementById("gameButton").style.display = "none";
-                  document.getElementById("gamescript1").style.display = "inline-block";
-                  document.getElementById("gamescript2").style.display = "inline-block";
-                  document.getElementById("gamescript3").style.display = "inline-block";
-                  document.getElementById("gamescript4").style.display = "inline-block";
-                  document.getElementById("gamescript5").style.display = "inline-block";
-                  document.getElementById("gamescript6").style.display = "inline-block";
-                  document.getElementById("gamescript7").style.display = "inline-block";
-              }
-          </script>
