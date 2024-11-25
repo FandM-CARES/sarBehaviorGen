@@ -130,7 +130,7 @@
         function showNextSteps() {
             var pieces = document.getElementById("choosePieces");
             var next = document.getElementById("onePiece");
-            var moves = document.getElementById("dropdown");
+            var moves = document.getElementById("X");
             pieces.style.display = pieces.style.display === "none" || pieces.style.display === "" ? "block" : "none";
             next.style.display = next.style.display === "none" || next.style.display === "" ? "block" : "none";
             moves.style.display = "none";
@@ -167,10 +167,10 @@
                 
             }
             else if (numPicked == 1) {
-                document.getElementById("dropdown").style.display = "inline-block";
+                document.getElementById("X").style.display = "inline-block";
             }
             else if (numPicked == 2) {
-
+                document.getElementById("XY").style.display = "inline-block";
             }
         }
         function move1Choices() {
@@ -181,6 +181,27 @@
             console.log(id)
             document.getElementById("moves").style.display = "none";
             document.getElementById("onePiece").innerHTML = id;
+            document.getElementById("grid").style.display = "grid";
+            if (id == "rotate") {
+                document.getElementById("TL").disabled = true;
+                document.getElementById("BL").disabled = true;
+                document.getElementById("C").disabled = true;
+                document.getElementById("TR").disabled = true;
+                document.getElementById("BR").disabled = true;
+                document.getElementById("U").disabled = true;
+                document.getElementById("D").disabled = true;
+            }
+            else {
+                document.getElementById("TL").disabled = false;
+                document.getElementById("BL").disabled = false;
+                document.getElementById("C").disabled = false;
+                document.getElementById("TR").disabled = false;
+                document.getElementById("BR").disabled = false;
+                document.getElementById("U").disabled = false;
+                document.getElementById("D").disabled = false;
+                document.getElementById("L").disabled = false;
+                document.getElementById("R").disabled = false;
+            }
         }
     </script>
     <style> 
@@ -223,20 +244,21 @@
         text-decoration: none;
         display: none;
     }
-    #dropdown {
+    #X {
         position: relative;
         display: none;
     }
-    #dropdown a {
+    #X a {
         color: black;
         padding: 10px 10px;
         text-decoration: none;
         display: block;
     }
-    .grid {
-        display: grid;
+    #grid {
+        width: 300px;
+        display: none;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap:  5px;
+        /* grid-column-end: 10px; */
     }
     #onePiece {
         background-color: lightskyblue;
@@ -267,7 +289,8 @@
         <button onclick="doAction({'name': 'Inquire'})">Inquire</button>
         <button onclick="doAction({'name': 'Inform'})">Inform</button>
         <br>
-        <button onclick="showNextSteps()">Instruct</button>
+        <button onclick="showNextSteps()">Instruct New</button>
+        <button onclick="doAction({'name': 'Instruct'})">Instruct</button>
         <button onclick="doAction({'name': 'Social'})">Social</button>
         <button onclick="doAction({'name': 'Persist'})">Persist</button>
         <br>
@@ -322,10 +345,10 @@
             <button id = "next" onclick= "next()">Next</button>
         </div>
         <br>
-        <div id = "dropdown" class = "dropdown">
+        <div id = "X" class = "X">
             <div id = "onePiece" onclick= "move1Choices()">Adjust X</div>
             <!-- https://www.w3schools.com/howto/howto_js_dropdown.asp -->
-            <div id = "moves">
+            <div id = "movesX">
                 <a href="#" id = "info" onclick= "choseMove(this)">Info</a>
                 <a href="#" id = "rotate" onclick= "choseMove(this)">Rotate X</a>
                 <a href="#" id = "flip" onclick= "choseMove(this)">Flip X</a>
@@ -337,17 +360,23 @@
                 <a href="#" id = "find" onclick= "choseMove(this)">Find X</a>
             </div>
         </div>
-        <div class = "grid">
-            <div>A</div>
-            <div>B</div>
-            <div>C</div>
-            <div>A</div>
-            <div>B</div>
-            <div>C</div>
-            <div>A</div>
-            <div>B</div>
-            <div>C</div>
+        <div id = "grid">
+            <button id = "TL">top left</button>
+            <button id = "U">up</button>
+            <button id = "TR">top right</button>
+            <button id = "L">left</button>
+            <button id = "C">center</button>
+            <button id = "R">right</button>
+            <button id = "BL">bot left</button>
+            <button id = "D">down</button>
+            <button id = "BR">bot right</button>
         </div>
+        <div id = "XY" class = "XY">
+            <div id = "twoPiece" onclick= "move2Choices()">Adjust X & Y</div>
+        <div id = "movesXY">
+            <a href="#" id = "swapXY" onclick= "choseMove(this)">Swap X & Y</a>
+            <a href="#" id = "connectXY" onclick= "choseMove(this)">Connect X & Y</a>
+            <a href="#" id = "rotate" value = "requiresLoc" onclick= "choseMove(this)">Connect corner X & Y</a>
         <br>
         <p2>
         States

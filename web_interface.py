@@ -61,7 +61,6 @@ def be_gen():
    state.add(['rapport',rapport])
    state.add(['level',level])
    state.add(next)
-   print(state)
 
    '''
    How to change the piece name and direction
