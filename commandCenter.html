@@ -130,10 +130,14 @@
         function showNextSteps() {
             var pieces = document.getElementById("choosePieces");
             var next = document.getElementById("onePiece");
-            var moves = document.getElementById("X");
+            var movesX = document.getElementById("X");
+            var locs = document.getElementById("grid");
+            var movesXY = document.getElementById('twoPiece')
             pieces.style.display = pieces.style.display === "none" || pieces.style.display === "" ? "block" : "none";
             next.style.display = next.style.display === "none" || next.style.display === "" ? "block" : "none";
-            moves.style.display = "none";
+            locs.style.display = "none";
+            movesX.style.display = "none";
+            movesXY.style.display = "none";
             if (numPicked != 0) {
                 for (i = 0; i < pickedPieces.length; i++) {
                     document.getElementById(pickedPieces[i]).style.border = "";
@@ -163,23 +167,27 @@
 
         }
         function next() {
-            if (numPicked == 0) {
-                
-            }
-            else if (numPicked == 1) {
+            if (numPicked == 1) {
+                document.getElementById("twoPiece").style.display = "none";
                 document.getElementById("X").style.display = "inline-block";
             }
             else if (numPicked == 2) {
-                document.getElementById("XY").style.display = "inline-block";
+                document.getElementById("X").style.display = "none";
+                document.getElementById("twoPiece").style.display = "inline-block";
             }
         }
         function move1Choices() {
-            document.getElementById("moves").style.display = "block";
+            document.getElementById("movesX").style.display = "block";
         }
+        function move2Choices() {
+            document.getElementById("movesXY").style.display = "inline-block";
+        }
+        var action;
         function choseMove(element) {
             var id = element.id
             console.log(id)
-            document.getElementById("moves").style.display = "none";
+            action = id
+            document.getElementById("movesX").style.display = "none";
             document.getElementById("onePiece").innerHTML = id;
             document.getElementById("grid").style.display = "grid";
             if (id == "rotate") {
@@ -202,6 +210,16 @@
                 document.getElementById("L").disabled = false;
                 document.getElementById("R").disabled = false;
             }
+        }
+        function resetLoc() {
+            document.getElementById("grid").style.display = "none";
+        }
+        function choseMoveXY(element) {
+            var id = element.id
+            console.log(id)
+            action = id
+            document.getElementById("movesXY").style.display = "none";
+            document.getElementById("twoPiece").innerHTML = id;
         }
     </script>
     <style> 
@@ -233,7 +251,7 @@
         width: 128px;
         height: 128px;
     }
-    #moves {
+    #movesX {
         position: absolute;
         background-color: #f1f1f1;
         min-width: 90px;
@@ -244,11 +262,24 @@
         text-decoration: none;
         display: none;
     }
-    #X {
-        position: relative;
+    #movesX a {
+        color: black;
+        padding: 10px 10px;
+        text-decoration: none;
+        display: block;
+    }
+    #movesXY {
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 90px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        padding: 5px;
+        color: black;
+        text-decoration: none;
         display: none;
     }
-    #X a {
+    #movesXY a {
         color: black;
         padding: 10px 10px;
         text-decoration: none;
@@ -266,6 +297,15 @@
         height:20px;
         text-align: center;
         padding: 8px;
+        display: none;
+    }
+    #twoPiece {
+        background-color: lightskyblue;
+        width: 100px;
+        height:20px;
+        text-align: center;
+        padding: 8px;
+        display: none;
     }
     </style>
     <div>
@@ -285,14 +325,14 @@
         Intents
         </p2>
         <br>
-        <button onclick="doAction({'name': 'Confirm'})">Confirm</button>
-        <button onclick="doAction({'name': 'Inquire'})">Inquire</button>
-        <button onclick="doAction({'name': 'Inform'})">Inform</button>
+        <button onclick="doAction({'name': 'confirm'})">Confirm</button>
+        <button onclick="doAction({'name': 'inquire'})">Inquire</button>
+        <button onclick="doAction({'name': 'inform'})">Inform</button>
         <br>
         <button onclick="showNextSteps()">Instruct New</button>
-        <button onclick="doAction({'name': 'Instruct'})">Instruct</button>
-        <button onclick="doAction({'name': 'Social'})">Social</button>
-        <button onclick="doAction({'name': 'Persist'})">Persist</button>
+        <button onclick="doAction({'name': 'instruct'})">Instruct</button>
+        <button onclick="doAction({'name': 'social'})">Social</button>
+        <button onclick="doAction({'name': 'persist'})">Persist</button>
         <br>
         <button onclick="doAction({'name': 'reconcileBelief'})">Reconcile Beliefs</button>
         <!-- <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button> -->
@@ -306,30 +346,30 @@
         <br>
         <div id = script>
             <div id = "intro">
-                <button id="introscript1" class = "intro" onclick="doAction({'name': 'script intro 1'})">Script 1</button>
-                <button id="introscript2" class = "intro" onclick="doAction({'name': 'script intro 2'})">Script 2</button>
-                <button id="introscript3" class = "intro" onclick="doAction({'name': 'script intro 3'})">Script 3</button>
-                <button id="introscript4" class = "intro" onclick="doAction({'name': 'script intro 4'})">Script 4</button>
-                <button id="introscript5" class = "intro" onclick="doAction({'name': 'script intro 5'})">Script 5</button>
+                <button id="introscript1" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '1'})">Script 1</button>
+                <button id="introscript2" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '2'})">Script 2</button>
+                <button id="introscript3" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '3'})">Script 3</button>
+                <button id="introscript4" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '4'})">Script 4</button>
+                <button id="introscript5" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '5'})">Script 5</button>
             </div>
             <br>
             <div id = "color">
-                <button id="colorscript1" class = "color" onclick="doAction({'name': 'script intro 6'})">Script 6</button>
-                <button id="colorscript2" class = "color" onclick="doAction({'name': 'script intro 7'})">Script 7</button>
-                <button id="colorscript3" class = "color" onclick="doAction({'name': 'script intro 8'})">Script 8</button>
-                <button id="colorscript4" class = "color" onclick="doAction({'name': 'script intro 9'})">Script 9</button>
-                <button id="colorscript5" class = "color" onclick="doAction({'name': 'script intro 10'})">Script 10</button>
-                <button id="colorscript6" class = "color" onclick="doAction({'name': 'script intro 11'})">Script 11</button>
+                <button id="colorscript1" class = "color" onclick="doAction({'name': 'followScript', 'script' : '6'})">Script 6</button>
+                <button id="colorscript2" class = "color" onclick="doAction({'name': 'followScript', 'script' : '7'})">Script 7</button>
+                <button id="colorscript3" class = "color" onclick="doAction({'name': 'followScript', 'script' : '8'})">Script 8</button>
+                <button id="colorscript4" class = "color" onclick="doAction({'name': 'followScript', 'script' : '9'})">Script 9</button>
+                <button id="colorscript5" class = "color" onclick="doAction({'name': 'followScript', 'script' : '10'})">Script 10</button>
+                <button id="colorscript6" class = "color" onclick="doAction({'name': 'followScript', 'script' : '11'})">Script 11</button>
             </div>
             <br>
             <div id = "game">
-                <button id="gamescript1" class = "game" onclick="doAction({'name': 'script intro 12'})">Script 12</button>
-                <button id="gamescript2" class = "game" onclick="doAction({'name': 'script intro 13'})">Script 13</button>
-                <button id="gamescript3" class = "game" onclick="doAction({'name': 'script intro 14'})">Script 14</button>
-                <button id="gamescript4" class = "game" onclick="doAction({'name': 'script intro 15'})">Script 15</button>
-                <button id="gamescript5" class = "game" onclick="doAction({'name': 'script intro 16'})">Script 16</button>
-                <button id="gamescript6" class = "game" onclick="doAction({'name': 'script intro 17'})">Script 17</button>
-                <button id="gamescript7" class = "game" onclick="doAction({'name': 'script intro 18'})">Script 18</button>
+                <button id="gamescript1" class = "game" onclick="doAction({'name': 'followScript', 'script' : '12'})">Script 12</button>
+                <button id="gamescript2" class = "game" onclick="doAction({'name': 'followScript', 'script' : '13'})">Script 13</button>
+                <button id="gamescript3" class = "game" onclick="doAction({'name': 'followScript', 'script' : '14'})">Script 14</button>
+                <button id="gamescript4" class = "game" onclick="doAction({'name': 'followScript', 'script' : '15'})">Script 15</button>
+                <button id="gamescript5" class = "game" onclick="doAction({'name': 'followScript', 'script' : '16'})">Script 16</button>
+                <button id="gamescript6" class = "game" onclick="doAction({'name': 'followScript', 'script' : '17'})">Script 17</button>
+                <button id="gamescript7" class = "game" onclick="doAction({'name': 'followScript', 'script' : '18'})">Script 18</button>
             </div>
         </div>
         <div id = choosePieces>
@@ -361,22 +401,25 @@
             </div>
         </div>
         <div id = "grid">
-            <button id = "TL">top left</button>
-            <button id = "U">up</button>
-            <button id = "TR">top right</button>
-            <button id = "L">left</button>
-            <button id = "C">center</button>
-            <button id = "R">right</button>
-            <button id = "BL">bot left</button>
-            <button id = "D">down</button>
-            <button id = "BR">bot right</button>
+            <button id = "TL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top left', 'X' : pickedPieces[0]})">top left</button>
+            <button id = "U" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'up', 'X' : pickedPieces[0]})">up</button>
+            <button id = "TR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top right', 'X' : pickedPieces[0]})">top right</button>
+            <button id = "L" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'left', 'X' : pickedPieces[0]})">left</button>
+            <button id = "C" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'center', 'X' : pickedPieces[0]})">center</button>
+            <button id = "R" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'right', 'X' : pickedPieces[0]})">right</button>
+            <button id = "BL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot left', 'X' : pickedPieces[0]})">bot left</button>
+            <button id = "D" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'down', 'X' : pickedPieces[0]})">down</button>
+            <button id = "BR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot right', 'X' : pickedPieces[0]})">bot right</button>
         </div>
-        <div id = "XY" class = "XY">
+        <!-- <div id = "XY"> -->
             <div id = "twoPiece" onclick= "move2Choices()">Adjust X & Y</div>
-        <div id = "movesXY">
-            <a href="#" id = "swapXY" onclick= "choseMove(this)">Swap X & Y</a>
-            <a href="#" id = "connectXY" onclick= "choseMove(this)">Connect X & Y</a>
-            <a href="#" id = "rotate" value = "requiresLoc" onclick= "choseMove(this)">Connect corner X & Y</a>
+
+            <div id = "movesXY">
+                <a href="#" id = "swapXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'swap', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Swap X & Y</a>
+                <a href="#" id = "connectXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect X & Y</a>
+                <a href="#" id = "connectCornerXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect-corner', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect corner X & Y</a>
+            </div>
+        <!-- </div> -->
         <br>
         <p2>
         States

@@ -43,50 +43,44 @@ def be_gen():
    else:
       affect = "neutral"
     
-   taskState = data.get('Task')
-   print(taskState)
-
+   state = State("test")
+   
    intent = data.get('Intent').get('name')
+   if data.get('Intent').get('name') == 'instruct':
+      needsToBe = []
+      needsToBe.append('needsToBe')
+      needsToBe.append(data.get('Intent').get('X'))
+      if data.get('Intent').get('Y') != None:
+         needsToBe.append(data.get('Intent').get('action'))
+         needsToBe.append(data.get('Intent').get('Y'))
+      else:
+         needsToBe.append(data.get('Intent').get('action'))
+         if data.get('Intent').get('loc') != None:
+            needsToBe.append(data.get('Intent').get('loc'))
+      state.add(needsToBe)
+      print(needsToBe)
+   if data.get('Intent').get('name') == 'followScript':
+      script = []
+      script.append('script')
+      script.append('intro')
+      script.append(data.get('Intent').get('script'))
+      state.add(script)
    verbal = data.get('Verbal')
    rapport = data.get('Rapport')
-   next = str(data.get('Next')).split(" ")
+   # next = str(data.get('Next')).split(" ")
    level = "l" + str(data.get('Level'))
    step = data.get('Step')
+   taskState = data.get('Task')
    # script = data.get('Script').split(" ")
 
-   state = State("test")
    state.add(['affect',affect])
    state.add(['taskState',taskState])
    state.add(['verbal',verbal])
    state.add(['rapport',rapport])
    state.add(['level',level])
-   state.add(next)
-
-   '''
-   How to change the piece name and direction
-   '''
    state.add(['step',step])
-
-   # if intent == "Follow Script":
-   #    intent == "followScript"
-   #    if script == "intro":
-   #       for i in range(1,6):
-   #          state.add(['script',script + str(i+1)])
-   #          generator.performBehaviorFor([intent.lower()],state)
-   #          state.remove(['script',script + str(i+1)])
-   #    elif script == "color":
-   #       for i in range(6,12):
-   #          state.add(['script',script + str(i)])
-   #          generator.performBehaviorFor([intent.lower()],state)
-   #          state.remove(['script',script + str(i)])
-   #    elif script == "game":
-   #       for i in range(12,19):
-   #          state.add(['script',script + str(i)])
-   #          generator.performBehaviorFor([intent.lower()],state)
-   #          state.remove(['script',script + str(i)])
-   #    return jsonify(data)
    
-   generator.performBehaviorFor([intent.lower()],state)
+   generator.performBehaviorFor([intent],state)
     
    return jsonify(data)
    '''
@@ -105,10 +99,7 @@ To do list:
     clean up code - good variable names :)  (done)
     new function to start engine - startskill + initiate robot  (done? I think it's calling start repeatedly still though)
 
-    Update UI - nextMove, step(stepName)
-
     can we change reconcile belief in misty.hddl?
-    can we add everything from general.hddl to misty.hddl?
     
     rename "name" to intent,
     add more json objects to doaction's parameter
@@ -118,4 +109,9 @@ To do list:
 
     When pressing button, record previous action -> recommend next action for script
     --> keep rotating & rotate little -> 1 option with scale for how much more they should rotate
+
+   reconcile belief still has error.
+   if it goes to i don't think so there might be additional preconditions.
+   don't check the ones that requires only 1 piece but doesn't need location, it will not work.
+      - flip, missing, remove
     '''
