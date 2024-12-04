@@ -42,6 +42,13 @@ def be_gen():
       affect = "positive"
    else:
       affect = "neutral"
+      affectData = int(data.get('Affect'))
+   if (affectData < 0):
+      affect = "negative"
+   elif (affectData > 0):
+      affect = "positive"
+   else:
+      affect = "neutral"
     
    state = State("test")
    
@@ -114,4 +121,9 @@ To do list:
    if it goes to i don't think so there might be additional preconditions.
    don't check the ones that requires only 1 piece but doesn't need location, it will not work.
       - flip, missing, remove
+   
+   misty.hddl script for simple actions like direction based on gaze of child
+   all simple actions in misty.hddl cannot be called right now.
+   
+   https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.atatus.com%2Fblog%2Fpowerful-css-selectors%2F&psig=AOvVaw2LhKFtJf1faJrIzVDKt1sn&ust=1733259013117000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDM85L7iYoDFQAAAAAdAAAAABBR
     '''

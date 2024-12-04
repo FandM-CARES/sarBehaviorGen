@@ -32,57 +32,22 @@
         }
         
         function doAction(intent) {
-            // var ip = document.getElementById("misty-robot-ip-address").value
-            // var event_name = document.getElementById("misty-event-name").value
+            var ip = document.getElementById("misty-robot-ip-address").value
             var affect = document.getElementById("affectRange").value
             var rapport = document.getElementById("rapportRange").value
             var level = document.getElementById("levelRange").value
-            var next = document.getElementById("next_move").value
-            var step = document.getElementById("step").value
-            // var sc = document.getElementsByName("script")
-
-            // for (i = 0; i < sc.length; i++) {
-            //     if (sc[i].checked) {
-            //         var script = sc[i].value
-            //     }
-            // }
-
-            var g = document.getElementsByName("gaze")
-
-            for (i = 0; i < g.length; i++) {
-                if (g[i].checked) {
-                    var gaze = g[i].value
-                }
-            }
-
-            var v = document.getElementsByName("verbal")
-
-            for (i = 0; i < v.length; i++) {
-                if (v[i].checked) {
-                    var verbal = v[i].value
-                }
-            }
-            var t = document.getElementsByName("task_state")
-
-            for (j = 0; j < t.length; j++) {
-                if (t[j].checked) {
-                    var task = t[j].value
-                }
-            }
+            var gaze = gazeInput;
+            var verbal = verbalInput;
+            var task = taskInput;
 
             var  data = {
-                // "Skill":skill_id,
-                // "EventName": event_name,
                 "Intent": intent,
                 "Affect": affect,
                 "Rapport": rapport,
                 "Level": level,
                 "Gaze": gaze,
                 "Verbal": verbal,
-                "Next": next,
                 "Task": task,
-                "Step": step,
-                // "Script": script
             };
             console.log(data);
             Promise.race([
@@ -101,14 +66,55 @@
             .then(response => response.json())
             .then(jsonData => console.log(jsonData)); 
         }
+        var taskInput;
+        var gazeInput;
+        var verbalInput;
+
+        function setTask(element) {
+            if (taskInput != null) {
+                document.getElementById(taskInput).style.backgroundColor = "rgb(217, 173, 139)";
+                if (taskInput != element.id) {
+                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                    taskInput = element.id;
+                }
+            }
+            else {
+                document.getElementById(element.id).style.backgroundColor = "lightblue";
+                taskInput = element.id;
+            }
+        }
+        
+        function setGaze(element) {
+            if (gazeInput != null) {
+                document.getElementById(gazeInput).style.backgroundColor = "rgb(217, 173, 139)";
+                if (gazeInput != element.id) {
+                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                }
+            }
+            else {
+                document.getElementById(element.id).style.backgroundColor = "lightblue";
+            }
+            gazeInput = element.id;
+        }
+
+        function setVerbal(element) {
+            if (verbalInput != null) {
+                document.getElementById(verbalInput).style.backgroundColor = "rgb(217, 173, 139)";
+                if (verbalInput != element.id) {
+                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                }
+            }
+            else {
+                document.getElementById(element.id).style.backgroundColor = "lightblue";
+            }
+            verbalInput = element.id;
+        }
 
         function showFollowScriptButton() {
             var followScriptButtons = document.getElementById('followScriptButton');
             var introScriptButtons = document.getElementById('intro');
             var colorScriptButtons = document.getElementById('color');
             var gameScriptButtons = document.getElementById('game');
-            
-            // if (document.getElementById("introButton").style.display == "none" || document.getElementById("introButton").style.display == "") {
             followScriptButtons.style.display = followScriptButtons.style.display === 'none' || followScriptButtons.style.display === '' ? 'block' : 'none';
             introScriptButtons.style.display = 'none';
             colorScriptButtons.style.display = 'none';
@@ -129,15 +135,15 @@
         }
         function showNextSteps() {
             var pieces = document.getElementById("choosePieces");
+            var nextButton = document.getElementById("next");
             var next = document.getElementById("onePiece");
-            var movesX = document.getElementById("X");
-            var locs = document.getElementById("grid");
-            var movesXY = document.getElementById('twoPiece')
             pieces.style.display = pieces.style.display === "none" || pieces.style.display === "" ? "block" : "none";
+            nextButton.style.display = nextButton.style.display === "none" || nextButton.style.display === "" ? "block" : "none";
             next.style.display = next.style.display === "none" || next.style.display === "" ? "block" : "none";
-            locs.style.display = "none";
-            movesX.style.display = "none";
-            movesXY.style.display = "none";
+            document.getElementById("grid").style.display = "none";
+            document.getElementById("X").style.display = "none";
+            document.getElementById('twoPiece').style.display = "none";
+            document.getElementById("movesXY").style.display = "none";
             if (numPicked != 0) {
                 for (i = 0; i < pickedPieces.length; i++) {
                     document.getElementById(pickedPieces[i]).style.border = "";
@@ -169,6 +175,7 @@
         function next() {
             if (numPicked == 1) {
                 document.getElementById("twoPiece").style.display = "none";
+                document.getElementById("movesXY").style.display = "none";
                 document.getElementById("X").style.display = "inline-block";
             }
             else if (numPicked == 2) {
@@ -177,7 +184,7 @@
             }
         }
         function move1Choices() {
-            document.getElementById("movesX").style.display = "block";
+            document.getElementById("movesX").style.display = "grid";
         }
         function move2Choices() {
             document.getElementById("movesXY").style.display = "inline-block";
@@ -223,13 +230,100 @@
         }
     </script>
     <style> 
+    * {
+        font-family: 'Tahoma', 'Arial', sans-serif;
+    }
     p2 {
         font-size: 30px;
         font-weight: bold;
+        font-family: 'Tahoma', 'Arial', sans-serif;
     }
     button {
         font-size: 18px;
-        font-family: 'Times New Roman', Times, serif;
+        font-family: 'Tahoma', 'Arial', sans-serif;
+    }
+    .ranges {
+        padding : 15px;
+        background-color: bisque;
+        max-width: 400px;
+    }
+    .gridtwoparts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap:  10px;
+        max-width: 800px;
+    }
+    .taskStates {
+        background-color: antiquewhite;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap:  10px;
+    }
+    .taskInput {
+        background-color: rgb(217, 173, 139);
+        color: rgb(64, 40, 17);
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+    .intentButtons {
+        background-color: antiquewhite;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
+        padding: 10px;
+        height: 247px;
+    }
+    .intentButton {
+        background-color: rgb(217, 173, 139);
+        padding: 15px 15px;
+        color: rgb(64, 40, 17);
+    }
+    .gv {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap:  10px;
+    }
+    .verbals {
+        background-color: antiquewhite;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+    }
+    .verbalInput {
+        background-color: rgb(217, 173, 139);
+        color: rgb(64, 40, 17);
+        padding: 5px 5px;
+        text-decoration: none;
+    }
+    .gazes {
+        background-color: antiquewhite;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+    }
+    .gazeInput {
+        background-color: rgb(217, 173, 139);
+        color: rgb(64, 40, 17);
+        padding: 5px 5px;
+        text-decoration: none;
+    }
+    .intents {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        grid-gap: 10px;
+        width: 1230px;
+        height: 340px;
+    }
+    .intentButton:active {
+        background-color: #f6d9b9;
+        box-shadow: 0 5px #b9abc1;
+        transform: translateY(4px);
+    }
+    #stateNames {
+        font-weight: bold;
     }
     #followScriptButton {
         display : none;
@@ -253,24 +347,27 @@
     }
     #movesX {
         position: absolute;
-        background-color: #f1f1f1;
+        background-color: antiquewhite;
         min-width: 90px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
         padding: 5px;
-        color: black;
-        text-decoration: none;
+        grid-template-columns: 1fr 1fr 1fr;
         display: none;
     }
-    #movesX a {
+    .movesX {
+        padding: 13px 13px;
         color: black;
-        padding: 10px 10px;
-        text-decoration: none;
-        display: block;
+
+    }
+    .movesXY {
+        padding: 13px 13px;
+        color: black;
+
     }
     #movesXY {
         position: absolute;
-        background-color: #f1f1f1;
+        background-color: antiquewhite;
         min-width: 90px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
@@ -285,6 +382,17 @@
         text-decoration: none;
         display: block;
     }
+    #next {
+        background-color: rgb(217, 173, 139);
+        color: black;
+        padding: 10px;
+        font-size: 22px;
+        font-weight: bold;
+        width: 100px;
+        text-align: center;
+        display: none;
+        border: 3px solid rgb(64, 40, 17);
+    }
     #grid {
         width: 300px;
         display: none;
@@ -292,20 +400,24 @@
         /* grid-column-end: 10px; */
     }
     #onePiece {
-        background-color: lightskyblue;
-        width: 60px;
+        background-color: rgb(217, 173, 139);
         height:20px;
         text-align: center;
         padding: 8px;
+        font-size: 17px;
+        font-weight: bold;
         display: none;
+        border: 3px solid rgb(64, 40, 17);
     }
     #twoPiece {
-        background-color: lightskyblue;
-        width: 100px;
+        background-color: rgb(217, 173, 139);
         height:20px;
         text-align: center;
         padding: 8px;
+        font-size: 17px;
+        font-weight: bold;
         display: none;
+        border: 3px solid rgb(64, 40, 17);
     }
     </style>
     <div>
@@ -322,195 +434,151 @@
         <br>
         <br>
         <p2>
-        Intents
-        </p2>
-        <br>
-        <button onclick="doAction({'name': 'confirm'})">Confirm</button>
-        <button onclick="doAction({'name': 'inquire'})">Inquire</button>
-        <button onclick="doAction({'name': 'inform'})">Inform</button>
-        <br>
-        <button onclick="showNextSteps()">Instruct New</button>
-        <button onclick="doAction({'name': 'instruct'})">Instruct</button>
-        <button onclick="doAction({'name': 'social'})">Social</button>
-        <button onclick="doAction({'name': 'persist'})">Persist</button>
-        <br>
-        <button onclick="doAction({'name': 'reconcileBelief'})">Reconcile Beliefs</button>
-        <!-- <button onclick="doAction({'name': 'Follow Script'})">Follow Scripts</button> -->
-        <button onclick="showFollowScriptButton()">Follow Scripts</button>
-
-        <div id = "followScriptButton">
-        <button id="introButton" onclick="showIntroScripts()">Introduction</button>
-        <button id="colorButton" onclick="showColorScripts()">Color</button>
-        <button id="gameButton" onclick="showGameScripts()">Game</button>
-        </div>
-        <br>
-        <div id = script>
-            <div id = "intro">
-                <button id="introscript1" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '1'})">Script 1</button>
-                <button id="introscript2" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '2'})">Script 2</button>
-                <button id="introscript3" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '3'})">Script 3</button>
-                <button id="introscript4" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '4'})">Script 4</button>
-                <button id="introscript5" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '5'})">Script 5</button>
-            </div>
-            <br>
-            <div id = "color">
-                <button id="colorscript1" class = "color" onclick="doAction({'name': 'followScript', 'script' : '6'})">Script 6</button>
-                <button id="colorscript2" class = "color" onclick="doAction({'name': 'followScript', 'script' : '7'})">Script 7</button>
-                <button id="colorscript3" class = "color" onclick="doAction({'name': 'followScript', 'script' : '8'})">Script 8</button>
-                <button id="colorscript4" class = "color" onclick="doAction({'name': 'followScript', 'script' : '9'})">Script 9</button>
-                <button id="colorscript5" class = "color" onclick="doAction({'name': 'followScript', 'script' : '10'})">Script 10</button>
-                <button id="colorscript6" class = "color" onclick="doAction({'name': 'followScript', 'script' : '11'})">Script 11</button>
-            </div>
-            <br>
-            <div id = "game">
-                <button id="gamescript1" class = "game" onclick="doAction({'name': 'followScript', 'script' : '12'})">Script 12</button>
-                <button id="gamescript2" class = "game" onclick="doAction({'name': 'followScript', 'script' : '13'})">Script 13</button>
-                <button id="gamescript3" class = "game" onclick="doAction({'name': 'followScript', 'script' : '14'})">Script 14</button>
-                <button id="gamescript4" class = "game" onclick="doAction({'name': 'followScript', 'script' : '15'})">Script 15</button>
-                <button id="gamescript5" class = "game" onclick="doAction({'name': 'followScript', 'script' : '16'})">Script 16</button>
-                <button id="gamescript6" class = "game" onclick="doAction({'name': 'followScript', 'script' : '17'})">Script 17</button>
-                <button id="gamescript7" class = "game" onclick="doAction({'name': 'followScript', 'script' : '18'})">Script 18</button>
-            </div>
-        </div>
-        <div id = choosePieces>
-            <img src="pictures/BlueSmallTriangle.PNG" alt="Smile" id = "BlueSmallTriangle" onclick = highlight(this)>
-            <img src="pictures/GreenLargeTriangle.PNG" alt="Smile" id = "GreenLargeTriangle" onclick = highlight(this)>
-            <img src="pictures/OrangeLargeTriangle.PNG" alt="Smile" id = "OrangeLargeTriangle" onclick = highlight(this)>
-            <img src="pictures/PinkSmallTriangle.PNG" alt="Smile" id = "PinkSmallTriangle" onclick = highlight(this)>
-            <img src="pictures/Purple.PNG" alt="Smile" id = "Purple" onclick = highlight(this)>
-            <img src="pictures/RedMediumTriangle.PNG" alt="Smile" id = "RedMediumTriangle" onclick = highlight(this)>
-            <img src="pictures/YellowSquare.PNG" alt="Smile" id = "YellowSquare" onclick = highlight(this)>
-            <img src="SmileyFacePink.png" alt="Smile" id = "SmileyFacePink" onclick = highlight(this)>
-            <br>
-            <button id = "next" onclick= "next()">Next</button>
-        </div>
-        <br>
-        <div id = "X" class = "X">
-            <div id = "onePiece" onclick= "move1Choices()">Adjust X</div>
-            <!-- https://www.w3schools.com/howto/howto_js_dropdown.asp -->
-            <div id = "movesX">
-                <a href="#" id = "info" onclick= "choseMove(this)">Info</a>
-                <a href="#" id = "rotate" onclick= "choseMove(this)">Rotate X</a>
-                <a href="#" id = "flip" onclick= "choseMove(this)">Flip X</a>
-                <a href="#" id = "missing" onclick= "choseMove(this)">Missing X</a>
-                <a href="#" id = "flip" onclick= "choseMove(this)">Rotate X</a>
-                <a href="#" id = "remove" onclick= "choseMove(this)">Remove X</a>
-                <a href="#" id = "move" onclick= "choseMove(this)">Move X</a>
-                <a href="#" id = "slide" onclick= "choseMove(this)">Slide X</a>
-                <a href="#" id = "find" onclick= "choseMove(this)">Find X</a>
-            </div>
-        </div>
-        <div id = "grid">
-            <button id = "TL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top left', 'X' : pickedPieces[0]})">top left</button>
-            <button id = "U" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'up', 'X' : pickedPieces[0]})">up</button>
-            <button id = "TR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top right', 'X' : pickedPieces[0]})">top right</button>
-            <button id = "L" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'left', 'X' : pickedPieces[0]})">left</button>
-            <button id = "C" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'center', 'X' : pickedPieces[0]})">center</button>
-            <button id = "R" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'right', 'X' : pickedPieces[0]})">right</button>
-            <button id = "BL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot left', 'X' : pickedPieces[0]})">bot left</button>
-            <button id = "D" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'down', 'X' : pickedPieces[0]})">down</button>
-            <button id = "BR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot right', 'X' : pickedPieces[0]})">bot right</button>
-        </div>
-        <!-- <div id = "XY"> -->
-            <div id = "twoPiece" onclick= "move2Choices()">Adjust X & Y</div>
-
-            <div id = "movesXY">
-                <a href="#" id = "swapXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'swap', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Swap X & Y</a>
-                <a href="#" id = "connectXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect X & Y</a>
-                <a href="#" id = "connectCornerXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect-corner', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect corner X & Y</a>
-            </div>
-        <!-- </div> -->
-        <br>
-        <p2>
         States
         </p2>
         <br>
+        <div class = gridtwoparts>
+            <div class = group>
+            <p id="stateNames">Ranges:</p>
+            <div class = ranges>
+                <label for="affectRange">Affect (between -1 and 1):</label>
+                <input type="range" min="-10" max="10" value="0" class="slider" id="affectRange">
+                <br>
+                <label for="levelRange">Level (between 1 and 4):</label>
+                <input type="range" min="1" max="4" value="1" class="slider" id="levelRange">
+                <br>
+                <label for="rapportRange">Rapport (between 0 and 1):</label>
+                <input type="range" min="0" max="1" value="0" class="slider" id="rapportRange">
+            </div>
+            <div class = gv>
+                <p id="stateNames">Gaze:</p>
+                <p id="stateNames">Verbal:</p>
+                <div class = "gazes">
+                    <div id = "task" class = "gazeInput" value = "task" onclick = setGaze(this)>Task</div>
+                    <div id = "robot" class = "gazeInput" value = "robot" onclick = setGaze(this)>Robot</div>
+                    <div id = "away" class = "gazeInput" value = "away" onclick = setGaze(this)>Away</div>
+                </div>
+                <div class = "verbals">
+                    <div id = "question" class = "verbalInput" value = "question" onclick = setVerbal(this)>Question</div>
+                    <div id = "compliment" class = "verbalInput" value = "compliment" onclick = setVerbal(this)>Compliment</div>
+                    <div id = "thank_you" class = "verbalInput" value = "thank_you" onclick = setVerbal(this)>Thank You</div>
+                </div>
+            </div>
+            </div>
+            <div class = "tasks">
+                <p id="stateNames">Task State:</p>
+                <div class = "taskStates">
+                <div id = "unstarted" class = "taskInput" value = "unstarted" onclick = setTask(this)>Unstarted</div>
+                <div id = "in_progress" class = "taskInput" value = "in_progress" onclick = setTask(this)>In Progress</div>
+                <div id = "on-paper" class = "taskInput" value = "on-paper" onclick = "setTask(this)">On Paper</div>
+                <div id = "no_error" class = "taskInput" value = "no_error" onclick = "setTask(this)">No Error</div>
+                <div id = "error" class = "taskInput" value = "error" onclick = "setTask(this)">Error</div>
+                <div id = "close" class = "taskInput" value = "close" onclick = setTask(this)>Close</div>
+                <div id = "not_touching" class = "taskInput" value = "not_touching" onclick = "setTask(this)">Not Touching</div>
+                <div id = "not_flat" class = "taskInput" value = "not_flat" onclick = "setTask(this)">Not Flat</div>
+                <div id = "not_flipped" class = "taskInput" value = "not_flipped" onclick = "setTask(this)">Not Flipped</div>
+                <div id = "missingPiece" class = "taskInput" value = "missingPiece" onclick = "setTask(this)">Missing Piece</div>
+                <div id = "almost-done" class = "taskInput" value = "almost-done" onclick = "setTask(this)">Almost Done</div>
+                <div id = "done" class = "taskInput" value = "done" onclick = "setTask(this)">Done</div>
+            </div>
+            </div>
+        </div>
         <br>
-        <label for="affectRange">Affect (between -1 and 1):</label>
-        <input type="range" min="-10" max="10" value="0" class="slider" id="affectRange">
         <br>
-        <label for="levelRange">Level (between 1 and 4):</label>
-        <input type="range" min="1" max="4" value="1" class="slider" id="levelRange">
+    
+        <p2>
+        Intents
+        </p2>
         <br>
-        <label for="rapportRange">Rapport (between 0 and 1):</label>
-        <input type="range" min="0" max="1" value="0" class="slider" id="rapportRange">
-        <br>
-        <br>
-        <p>Gaze:</p>
-
-        <form>
-          <input type="radio" id="task" name="gaze" value="Task">
-          <label for="Task">Task</label><br>
-          <input type="radio" id="robot" name="gaze" value="Robot">
-          <label for="Robot">Robot</label><br>
-          <input type="radio" id="away" name="gaze" value="Away">
-          <label for="Away">Away</label>
-        </form> 
-        <br>
-        <p>Verbal:</p>
-
-        <form>
-          <input type="radio" id="question" name="verbal" value="Question">
-          <label for="question">Question</label><br>
-          <input type="radio" id="compliment" name="verbal" value="Compliment">
-          <label for="compliment">Compliment</label><br>
-          <input type="radio" id="thankyou" name="verbal" value="Thank_You">
-          <label for="thank_you">Thank You</label>
-        </form> 
-        <br>
-        <label for="next_move">Next Move:</label>
-        <input class="button" id="next_move">
-        <br>
-        <p>Task State:</p>
-
-        <form>
-          <input type="radio" id="unstarted" name="task_state" value="unstarted">
-          <label for="unstarted">Unstarted</label><br>
-
-          <input type="radio" id="in_progress" name="task_state" value="in-progress">
-          <label for="in_progress">In Progress</label><br>
-
-          <input type="radio" id="close" name="task_state" value="has-no-close">
-          <label for="close">Close</label><br>
-
-          <input type="radio" id="error" name="task_state" value="error">
-          <label for="no_error">Error</label><br>
-
-          <input type="radio" id="no_error" name="task_state" value="no_error">
-          <label for="no_error">No Error</label><br>
-
-          <input type="radio" id="not_touching" name="task_state" value="not_touching">
-          <label for="not_touching">Not Touching</label><br>
-
-          <input type="radio" id="not_flat" name="task_state" value="not_flat">
-          <label for="not_flat">Not Flat</label><br>
-
-          <input type="radio" id="not_flipped" name="task_state" value="not_flipped">
-          <label for="not_flipped">Not Flipped</label><br>
-
-          <input type="radio" id="on-paper" name="task_state" value="on-paper">
-          <label for="on-paper">On Paper</label><br>
-          
-          <input type="radio" id="missingPiece" name="task_state" value="missingPiece">
-          <label for="missingPiece">Missing Piece</label><br>
-
-          <input type="radio" id="almost_done" name="task_state" value="almost-done">
-          <label for="almost_done">Almost Done</label><br>
-
-          <input type="radio" id="done" name="task_state" value="done">
-          <label for="done">Done</label><br>
-        </form> 
-        <br>
-        <label for="step">Step:</label>
-        <input class="button" id="step">
-        <div id = "result"></div>
-        <br>
-
-        <form>
-            <input type="radio" id="intro" name="script" value="intro">
-            <label for="intro">Introduction</label><br>
-            <input type="radio" id="color" name="script" value="color">
-            <label for="color">Color</label><br>
-            <input type="radio" id="game" name="script" value="game">
-            <label for="game">Game</label>
-          </form> 
+        <div class = "intents">
+            <div class = "intentButtons">
+                <div class = "intentButton" onclick="showNextSteps()">Instruct</div>
+                <div class = "intentButton"  onclick="showFollowScriptButton()">Follow Scripts</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'confirm'})">Confirm</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'inquire'})">Inquire</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'inform'})">Inform</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'social'})">Social</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'persist'})">Persist</div>
+                <div class = "intentButton"  onclick="doAction({'name': 'reconcileBelief'})">Reconcile Beliefs</div>
+            </div>
+            <div class = extraIntentButtons>
+                <div id = "followScriptButton">
+                <button id="introButton" onclick="showIntroScripts()">Introduction</button>
+                <button id="colorButton" onclick="showColorScripts()">Color</button>
+                <button id="gameButton" onclick="showGameScripts()">Game</button>
+                </div>
+                <div id = script>
+                    <div id = "intro">
+                        <button id="introscript1" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '1'})">Script 1</button>
+                        <button id="introscript2" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '2'})">Script 2</button>
+                        <button id="introscript3" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '3'})">Script 3</button>
+                        <button id="introscript4" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '4'})">Script 4</button>
+                        <button id="introscript5" class = "intro" onclick="doAction({'name': 'followScript', 'script' : '5'})">Script 5</button>
+                    </div>
+                    <div id = "color">
+                        <button id="colorscript1" class = "color" onclick="doAction({'name': 'followScript', 'script' : '6'})">Script 6</button>
+                        <button id="colorscript2" class = "color" onclick="doAction({'name': 'followScript', 'script' : '7'})">Script 7</button>
+                        <button id="colorscript3" class = "color" onclick="doAction({'name': 'followScript', 'script' : '8'})">Script 8</button>
+                        <button id="colorscript4" class = "color" onclick="doAction({'name': 'followScript', 'script' : '9'})">Script 9</button>
+                        <button id="colorscript5" class = "color" onclick="doAction({'name': 'followScript', 'script' : '10'})">Script 10</button>
+                        <button id="colorscript6" class = "color" onclick="doAction({'name': 'followScript', 'script' : '11'})">Script 11</button>
+                    </div>
+                    <div id = "game">
+                        <button id="gamescript1" class = "game" onclick="doAction({'name': 'followScript', 'script' : '12'})">Script 12</button>
+                        <button id="gamescript2" class = "game" onclick="doAction({'name': 'followScript', 'script' : '13'})">Script 13</button>
+                        <button id="gamescript3" class = "game" onclick="doAction({'name': 'followScript', 'script' : '14'})">Script 14</button>
+                        <button id="gamescript4" class = "game" onclick="doAction({'name': 'followScript', 'script' : '15'})">Script 15</button>
+                        <button id="gamescript5" class = "game" onclick="doAction({'name': 'followScript', 'script' : '16'})">Script 16</button>
+                        <button id="gamescript6" class = "game" onclick="doAction({'name': 'followScript', 'script' : '17'})">Script 17</button>
+                        <button id="gamescript7" class = "game" onclick="doAction({'name': 'followScript', 'script' : '18'})">Script 18</button>
+                    </div>
+                </div>
+                <div id = choosePieces>
+                    <img src="pictures/BlueSmallTriangle.PNG" alt="Smile" id = "Blue Small Triangle" onclick = highlight(this)>
+                    <img src="pictures/GreenLargeTriangle.PNG" alt="Smile" id = "Green Large Triangle" onclick = highlight(this)>
+                    <img src="pictures/OrangeLargeTriangle.PNG" alt="Smile" id = "Orange Large Triangle" onclick = highlight(this)>
+                    <img src="pictures/PinkSmallTriangle.PNG" alt="Smile" id = "Pink Small Triangle" onclick = highlight(this)>
+                    <br>
+                    <img src="pictures/Purple.PNG" alt="Smile" id = "Purple" onclick = highlight(this)>
+                    <img src="pictures/RedMediumTriangle.PNG" alt="Smile" id = "Red Medium Triangle" onclick = highlight(this)>
+                    <img src="pictures/YellowSquare.PNG" alt="Smile" id = "Yellow Square" onclick = highlight(this)>
+                    <img src="SmileyFacePink.png" alt="Smile" id = "That Piece" onclick = highlight(this)>
+                </div>
+            </div>
+            <div class = "extraInstructButtons">
+                <c id = "next" onclick= "next()">Next</c>
+                <br>
+                <div id = "X" class = "X">
+                    <div id = "onePiece" onclick= "move1Choices()">Adjust X</div>
+                    <div id = "movesX">
+                        <div class = "movesX" id = "info" onclick= "choseMove(this)">Info</div>
+                        <div class = "movesX"  id = "rotate" onclick= "choseMove(this)">Rotate X</div>
+                        <div class = "movesX"  id = "flip" onclick= "choseMove(this)">Flip X</div>
+                        <div class = "movesX"  id = "missing" onclick= "choseMove(this)">Missing X</div>
+                        <div class = "movesX"  id = "flip" onclick= "choseMove(this)">Rotate X</div>
+                        <div class = "movesX"  id = "remove" onclick= "choseMove(this)">Remove X</div>
+                        <div class = "movesX"  id = "move" onclick= "choseMove(this)">Move X</div>
+                        <div class = "movesX"  id = "slide" onclick= "choseMove(this)">Slide X</div>
+                        <div class = "movesX"  id = "find" onclick= "choseMove(this)">Find X</div>
+                    </div>
+                </div>
+                <div id = "grid">
+                    <button id = "TL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top left', 'X' : pickedPieces[0]})">top left</button>
+                    <button id = "U" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'up', 'X' : pickedPieces[0]})">up</button>
+                    <button id = "TR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top right', 'X' : pickedPieces[0]})">top right</button>
+                    <button id = "L" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'left', 'X' : pickedPieces[0]})">left</button>
+                    <button id = "C" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'center', 'X' : pickedPieces[0]})">center</button>
+                    <button id = "R" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'right', 'X' : pickedPieces[0]})">right</button>
+                    <button id = "BL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot left', 'X' : pickedPieces[0]})">bot left</button>
+                    <button id = "D" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'down', 'X' : pickedPieces[0]})">down</button>
+                    <button id = "BR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot right', 'X' : pickedPieces[0]})">bot right</button>
+                </div>
+                    <div id = "twoPiece" onclick= "move2Choices()">Adjust X & Y</div>
+                    <br>
+                    <div id = "movesXY">
+                        <div class = "movesXY" id = "swapXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'swap', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Swap X & Y</div>
+                        <div class = "movesXY" id = "connectXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect X & Y</div>
+                        <div class = "movesXY" id = "connectCornerXY" onclick= "choseMoveXY(this); doAction({'name' : 'instruct', 'action' : 'connect-corner', 'X' : pickedPieces[0], 'Y' : pickedPieces[1]})">Connect corner X & Y</div>
+                    </div>
+            </div>
+        </div>
