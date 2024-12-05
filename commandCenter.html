@@ -34,7 +34,14 @@
         function doAction(intent) {
             var ip = document.getElementById("misty-robot-ip-address").value
             var affect = document.getElementById("affectRange").value
-            var rapport = document.getElementById("rapportRange").value
+            var rapportNum = document.getElementById("rapportRange").value
+            var rapport;
+            if (rapportNum = 1) {
+                rapport = "high";
+            }
+            else if (rapportNum = 0) {
+                rapport = "low";
+            }
             var level = document.getElementById("levelRange").value
             var gaze = gazeInput;
             var verbal = verbalInput;
@@ -74,12 +81,12 @@
             if (taskInput != null) {
                 document.getElementById(taskInput).style.backgroundColor = "rgb(217, 173, 139)";
                 if (taskInput != element.id) {
-                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                    element.style.backgroundColor = "lightblue";
                     taskInput = element.id;
                 }
             }
             else {
-                document.getElementById(element.id).style.backgroundColor = "lightblue";
+                element.style.backgroundColor = "lightblue";
                 taskInput = element.id;
             }
         }
@@ -88,11 +95,11 @@
             if (gazeInput != null) {
                 document.getElementById(gazeInput).style.backgroundColor = "rgb(217, 173, 139)";
                 if (gazeInput != element.id) {
-                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                    element.style.backgroundColor = "lightblue";
                 }
             }
             else {
-                document.getElementById(element.id).style.backgroundColor = "lightblue";
+                element.style.backgroundColor = "lightblue";
             }
             gazeInput = element.id;
         }
@@ -101,11 +108,11 @@
             if (verbalInput != null) {
                 document.getElementById(verbalInput).style.backgroundColor = "rgb(217, 173, 139)";
                 if (verbalInput != element.id) {
-                    document.getElementById(element.id).style.backgroundColor = "lightblue";
+                    element.style.backgroundColor = "lightblue";
                 }
             }
             else {
-                document.getElementById(element.id).style.backgroundColor = "lightblue";
+                element.style.backgroundColor = "lightblue";
             }
             verbalInput = element.id;
         }
@@ -154,6 +161,7 @@
         }
         function highlight(img) {
             var id = img.id;
+            var col = img.name;
             if (numPicked == 2) {
                 numPicked = 0
                 document.getElementById(pickedPieces[0]).style.border = "";
@@ -169,6 +177,7 @@
                 return;
             }
             document.getElementById(id).style.border = "12px solid cornflowerblue";
+            console.log(img.name);
             numPicked = pickedPieces.push(id);
 
         }
@@ -190,33 +199,62 @@
             document.getElementById("movesXY").style.display = "inline-block";
         }
         var action;
+        var translate_loc ={
+            "lowerLeft":"bottom left",
+            "lowerRight":"bottom right",
+            "upperRight": "top right",
+            "upperLeft": "top left",
+            "center": "middle",
+            "up": "up",
+            "right": "right",
+            "left": "left",
+            "down": "down"
+        }
         function choseMove(element) {
             var id = element.id
             console.log(id)
             action = id
+            document.getElementById("infoOptions").style.display = "none";
             document.getElementById("movesX").style.display = "none";
             document.getElementById("onePiece").innerHTML = id;
-            document.getElementById("grid").style.display = "grid";
-            if (id == "rotate") {
-                document.getElementById("TL").disabled = true;
-                document.getElementById("BL").disabled = true;
-                document.getElementById("C").disabled = true;
-                document.getElementById("TR").disabled = true;
-                document.getElementById("BR").disabled = true;
-                document.getElementById("U").disabled = true;
-                document.getElementById("D").disabled = true;
+            if (id == "piececolor") {
+                document.getElementById("grid").style.display = "none";
+                var piececolor = document.getElementById(pickedPieces[0]).name;
+                console.log(piececolor);
+                return doAction({'name' : 'instruct', 'action' : action, 'X' : pickedPieces[0], 'color': piececolor});
+            }
+            else if (id == "colorshape") {
+                document.getElementById("grid").style.display = "none";
+                return doAction({'name' : 'instruct', 'action' : action, 'X' : pickedPieces[0]});
             }
             else {
-                document.getElementById("TL").disabled = false;
-                document.getElementById("BL").disabled = false;
-                document.getElementById("C").disabled = false;
-                document.getElementById("TR").disabled = false;
-                document.getElementById("BR").disabled = false;
-                document.getElementById("U").disabled = false;
-                document.getElementById("D").disabled = false;
-                document.getElementById("L").disabled = false;
-                document.getElementById("R").disabled = false;
+                document.getElementById("grid").style.display = "grid";
+                if (id == "rotate") {
+                    document.getElementById("TL").disabled = true;
+                    document.getElementById("BL").disabled = true;
+                    document.getElementById("C").disabled = true;
+                    document.getElementById("TR").disabled = true;
+                    document.getElementById("BR").disabled = true;
+                    document.getElementById("U").disabled = true;
+                    document.getElementById("D").disabled = true;
+                }
+                else {
+                    document.getElementById("TL").disabled = false;
+                    document.getElementById("BL").disabled = false;
+                    document.getElementById("C").disabled = false;
+                    document.getElementById("TR").disabled = false;
+                    document.getElementById("BR").disabled = false;
+                    document.getElementById("U").disabled = false;
+                    document.getElementById("D").disabled = false;
+                    document.getElementById("L").disabled = false;
+                    document.getElementById("R").disabled = false;
+                }
             }
+
+        }
+        function showInfo() {
+            document.getElementById("movesX").style.display = "none";
+            document.getElementById("infoOptions").style.display = "block";
         }
         function resetLoc() {
             document.getElementById("grid").style.display = "none";
@@ -355,10 +393,23 @@
         grid-template-columns: 1fr 1fr 1fr;
         display: none;
     }
+    #infoOptions {
+        position: absolute;
+        background-color: antiquewhite;
+        min-width: 90px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        padding: 5px;
+        grid-template-columns: 1fr 1fr 1fr;
+        display: none;
+    }
+    .infoOption {
+        padding: 13px 13px;
+        color: black;
+    }
     .movesX {
         padding: 13px 13px;
         color: black;
-
     }
     .movesXY {
         padding: 13px 13px;
@@ -534,15 +585,15 @@
                     </div>
                 </div>
                 <div id = choosePieces>
-                    <img src="pictures/BlueSmallTriangle.PNG" alt="Smile" id = "Blue Small Triangle" onclick = highlight(this)>
-                    <img src="pictures/GreenLargeTriangle.PNG" alt="Smile" id = "Green Large Triangle" onclick = highlight(this)>
-                    <img src="pictures/OrangeLargeTriangle.PNG" alt="Smile" id = "Orange Large Triangle" onclick = highlight(this)>
-                    <img src="pictures/PinkSmallTriangle.PNG" alt="Smile" id = "Pink Small Triangle" onclick = highlight(this)>
+                    <img src="pictures/BlueSmallTriangle.PNG" name = "Blue" id = "Blue Small Triangle" onclick = highlight(this)>
+                    <img src="pictures/GreenLargeTriangle.PNG" name = "Green" id = "Green Large Triangle" onclick = highlight(this)>
+                    <img src="pictures/OrangeLargeTriangle.PNG" name = "Orange" id = "Orange Large Triangle" onclick = highlight(this)>
+                    <img src="pictures/PinkSmallTriangle.PNG" name = "Pink" id = "Pink Small Triangle" onclick = highlight(this)>
                     <br>
-                    <img src="pictures/Purple.PNG" alt="Smile" id = "Purple" onclick = highlight(this)>
-                    <img src="pictures/RedMediumTriangle.PNG" alt="Smile" id = "Red Medium Triangle" onclick = highlight(this)>
-                    <img src="pictures/YellowSquare.PNG" alt="Smile" id = "Yellow Square" onclick = highlight(this)>
-                    <img src="SmileyFacePink.png" alt="Smile" id = "That Piece" onclick = highlight(this)>
+                    <img src="pictures/Purple.PNG" name = "Purple" id = "Purple Small Diamond" onclick = highlight(this)>
+                    <img src="pictures/RedMediumTriangle.PNG" name = "Red" id = "Red Medium Triangle" onclick = highlight(this)>
+                    <img src="pictures/YellowSquare.PNG" name = "Yellow" id = "Yellow Square" onclick = highlight(this)>
+                    <img src="SmileyFacePink.png" name = "None" id = "That Piece" onclick = highlight(this)>
                 </div>
             </div>
             <div class = "extraInstructButtons">
@@ -551,7 +602,7 @@
                 <div id = "X" class = "X">
                     <div id = "onePiece" onclick= "move1Choices()">Adjust X</div>
                     <div id = "movesX">
-                        <div class = "movesX" id = "info" onclick= "choseMove(this)">Info</div>
+                        <div class = "movesX" id = "info" onclick= "showInfo()">Info</div>
                         <div class = "movesX"  id = "rotate" onclick= "choseMove(this)">Rotate X</div>
                         <div class = "movesX"  id = "flip" onclick= "choseMove(this)">Flip X</div>
                         <div class = "movesX"  id = "missing" onclick= "choseMove(this)">Missing X</div>
@@ -562,16 +613,21 @@
                         <div class = "movesX"  id = "find" onclick= "choseMove(this)">Find X</div>
                     </div>
                 </div>
+                <div id="infoOptions">
+                    <div class = "infoOption"  id = "location" onclick= "choseMove(this)">Just Location</div>
+                    <div class = "infoOption"  id = "piececolor" onclick= "choseMove(this)">Just Color</div>
+                    <div class = "infoOption"  id = "colorshape" onclick= "choseMove(this)">Piece Name</div>
+                </div>
                 <div id = "grid">
-                    <button id = "TL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top left', 'X' : pickedPieces[0]})">top left</button>
+                    <button id = "TL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'upperLeft', 'X' : pickedPieces[0]})">top left</button>
                     <button id = "U" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'up', 'X' : pickedPieces[0]})">up</button>
-                    <button id = "TR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'top right', 'X' : pickedPieces[0]})">top right</button>
+                    <button id = "TR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'upperRight', 'X' : pickedPieces[0]})">top right</button>
                     <button id = "L" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'left', 'X' : pickedPieces[0]})">left</button>
                     <button id = "C" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'center', 'X' : pickedPieces[0]})">center</button>
                     <button id = "R" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'right', 'X' : pickedPieces[0]})">right</button>
-                    <button id = "BL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot left', 'X' : pickedPieces[0]})">bot left</button>
+                    <button id = "BL" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'lowerLeft', 'X' : pickedPieces[0]})">bot left</button>
                     <button id = "D" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'down', 'X' : pickedPieces[0]})">down</button>
-                    <button id = "BR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'bot right', 'X' : pickedPieces[0]})">bot right</button>
+                    <button id = "BR" onclick = "resetLoc();doAction({'name' : 'instruct', 'action' : action, 'loc' : 'lowerRight', 'X' : pickedPieces[0]})">bot right</button>
                 </div>
                     <div id = "twoPiece" onclick= "move2Choices()">Adjust X & Y</div>
                     <br>

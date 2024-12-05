@@ -64,6 +64,8 @@ def be_gen():
          needsToBe.append(data.get('Intent').get('action'))
          if data.get('Intent').get('loc') != None:
             needsToBe.append(data.get('Intent').get('loc'))
+         if data.get('Intent').get('color') != None:
+            needsToBe.append(data.get('Intent').get('color'))
       state.add(needsToBe)
       print(needsToBe)
    if data.get('Intent').get('name') == 'followScript':
@@ -126,4 +128,6 @@ To do list:
    all simple actions in misty.hddl cannot be called right now.
    
    https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.atatus.com%2Fblog%2Fpowerful-css-selectors%2F&psig=AOvVaw2LhKFtJf1faJrIzVDKt1sn&ust=1733259013117000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDM85L7iYoDFQAAAAAdAAAAABBR
+
+   check-x is having logic problem, because it is asking for z, it considers the 2nd piece z
     '''

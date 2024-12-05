@@ -232,6 +232,42 @@ INSTRUCT LEVEL 3;
         (SayText ?piece)
         (release-turn )))
 
+(:method just-location
+    :parameters ()
+    :task (instruct )
+    :precondition (and
+        (needsToBe ?piece location ?dir)
+        (level l3))
+    :ordered-subtasks(and
+        (SayText ?dir)
+        (LookInDirection ?dir)
+        (release-turn )))
+
+(:method just-color
+    :parameters ()
+    :task (instruct )
+    :precondition (and
+        (needsToBe ?piece piececolor ?color)
+        (level l3))
+    :ordered-subtasks(and
+        (LookInDirection center)
+        (SayText "The")
+        (SayText ?color)
+        (SayText "one")
+        (release-turn )))
+
+(:method color-shape
+    :parameters ()
+    :task (instruct )
+    :precondition (and
+        (needsToBe ?piece colorshape)
+        (level l3))
+    :ordered-subtasks(and
+        (LookInDirection center)
+        (SayText "The")
+        (SayText ?piece)
+        (release-turn )))
+
 (:method missing-x
     :parameters()
     :task (instruct )
