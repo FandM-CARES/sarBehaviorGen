@@ -36,12 +36,13 @@
             var affect = document.getElementById("affectRange").value
             var rapportNum = document.getElementById("rapportRange").value
             var rapport;
-            if (rapportNum = 1) {
+            if (rapportNum == 1) {
                 rapport = "high";
             }
-            else if (rapportNum = 0) {
+            else if (rapportNum == 0) {
                 rapport = "low";
             }
+            console.log(rapport);
             var level = document.getElementById("levelRange").value
             var gaze = gazeInput;
             var verbal = verbalInput;
@@ -94,7 +95,11 @@
         function setGaze(element) {
             if (gazeInput != null) {
                 document.getElementById(gazeInput).style.backgroundColor = "rgb(217, 173, 139)";
-                if (gazeInput != element.id) {
+                if (gazeInput == element.id) {
+                    gazeInput = null;
+                    return;
+                }
+                else if (gazeInput != element.id) {
                     element.style.backgroundColor = "lightblue";
                 }
             }
@@ -107,6 +112,10 @@
         function setVerbal(element) {
             if (verbalInput != null) {
                 document.getElementById(verbalInput).style.backgroundColor = "rgb(217, 173, 139)";
+                if (verbalInput == element.id) {
+                    verbalInput = null;
+                    return;
+                }
                 if (verbalInput != element.id) {
                     element.style.backgroundColor = "lightblue";
                 }
@@ -223,17 +232,20 @@
                 console.log(piececolor);
                 return doAction({'name' : 'instruct', 'action' : action, 'X' : pickedPieces[0], 'color': piececolor});
             }
-            else if (id == "colorshape") {
+            else if (id == "colorshape" || id == "not touched") {
                 document.getElementById("grid").style.display = "none";
                 return doAction({'name' : 'instruct', 'action' : action, 'X' : pickedPieces[0]});
             }
             else {
                 document.getElementById("grid").style.display = "grid";
-                if (id == "rotate") {
-                    document.getElementById("TL").disabled = true;
+                if (id == "spin") {
+                    document.getElementById("TL").innerHTML = "Spin more Left";
+                    document.getElementById("TL").onclick = function () {resetLoc();doAction({'name' : 'instruct', 'action' : 'spin more', 'loc' : 'left', 'X' : pickedPieces[0]})};
                     document.getElementById("BL").disabled = true;
-                    document.getElementById("C").disabled = true;
-                    document.getElementById("TR").disabled = true;
+                    document.getElementById("C").innerHTML = "Keep Spinning";
+                    document.getElementById("C").onclick = function () {resetLoc();doAction({'name' : 'instruct', 'action' : 'spin keep', 'X' : pickedPieces[0]})};
+                    document.getElementById("TR").innerHTML = "Spin more Right";
+                    document.getElementById("TR").onclick = function () {resetLoc();doAction({'name' : 'instruct', 'action' : 'spin more', 'loc' : 'right', 'X' : pickedPieces[0]})};
                     document.getElementById("BR").disabled = true;
                     document.getElementById("U").disabled = true;
                     document.getElementById("D").disabled = true;
@@ -520,14 +532,14 @@
                 <p id="stateNames">Task State:</p>
                 <div class = "taskStates">
                 <div id = "unstarted" class = "taskInput" value = "unstarted" onclick = setTask(this)>Unstarted</div>
-                <div id = "in_progress" class = "taskInput" value = "in_progress" onclick = setTask(this)>In Progress</div>
+                <div id = "in-progress" class = "taskInput" value = "in-progress" onclick = setTask(this)>In Progress</div>
                 <div id = "on-paper" class = "taskInput" value = "on-paper" onclick = "setTask(this)">On Paper</div>
-                <div id = "no_error" class = "taskInput" value = "no_error" onclick = "setTask(this)">No Error</div>
+                <div id = "no-error" class = "taskInput" value = "no-error" onclick = "setTask(this)">No Error</div>
                 <div id = "error" class = "taskInput" value = "error" onclick = "setTask(this)">Error</div>
                 <div id = "close" class = "taskInput" value = "close" onclick = setTask(this)>Close</div>
-                <div id = "not_touching" class = "taskInput" value = "not_touching" onclick = "setTask(this)">Not Touching</div>
-                <div id = "not_flat" class = "taskInput" value = "not_flat" onclick = "setTask(this)">Not Flat</div>
-                <div id = "not_flipped" class = "taskInput" value = "not_flipped" onclick = "setTask(this)">Not Flipped</div>
+                <div id = "not-touching" class = "taskInput" value = "not-touching" onclick = "setTask(this)">Not Touching</div>
+                <div id = "not-flat" class = "taskInput" value = "not-flat" onclick = "setTask(this)">Not Flat</div>
+                <div id = "not-flipped" class = "taskInput" value = "not-flipped" onclick = "setTask(this)">Not Flipped</div>
                 <div id = "missingPiece" class = "taskInput" value = "missingPiece" onclick = "setTask(this)">Missing Piece</div>
                 <div id = "almost-done" class = "taskInput" value = "almost-done" onclick = "setTask(this)">Almost Done</div>
                 <div id = "done" class = "taskInput" value = "done" onclick = "setTask(this)">Done</div>
@@ -603,14 +615,14 @@
                     <div id = "onePiece" onclick= "move1Choices()">Adjust X</div>
                     <div id = "movesX">
                         <div class = "movesX" id = "info" onclick= "showInfo()">Info</div>
-                        <div class = "movesX"  id = "rotate" onclick= "choseMove(this)">Rotate X</div>
+                        <div class = "movesX"  id = "spin" onclick= "choseMove(this)">Rotate X</div>
                         <div class = "movesX"  id = "flip" onclick= "choseMove(this)">Flip X</div>
                         <div class = "movesX"  id = "missing" onclick= "choseMove(this)">Missing X</div>
-                        <div class = "movesX"  id = "flip" onclick= "choseMove(this)">Rotate X</div>
                         <div class = "movesX"  id = "remove" onclick= "choseMove(this)">Remove X</div>
                         <div class = "movesX"  id = "move" onclick= "choseMove(this)">Move X</div>
                         <div class = "movesX"  id = "slide" onclick= "choseMove(this)">Slide X</div>
                         <div class = "movesX"  id = "find" onclick= "choseMove(this)">Find X</div>
+                        <div class = "movesX"  id = "not touched" onclick= "choseMove(this)">Not Touched</div>
                     </div>
                 </div>
                 <div id="infoOptions">

@@ -61,7 +61,9 @@ def be_gen():
          needsToBe.append(data.get('Intent').get('action'))
          needsToBe.append(data.get('Intent').get('Y'))
       else:
-         needsToBe.append(data.get('Intent').get('action'))
+         act = data.get('Intent').get('action').split(" ")
+         for a in act:
+            needsToBe.append(a)
          if data.get('Intent').get('loc') != None:
             needsToBe.append(data.get('Intent').get('loc'))
          if data.get('Intent').get('color') != None:
@@ -74,9 +76,10 @@ def be_gen():
       script.append('intro')
       script.append(data.get('Intent').get('script'))
       state.add(script)
+      print(script)
    verbal = data.get('Verbal')
    rapport = data.get('Rapport')
-   # next = str(data.get('Next')).split(" ")
+   gaze = data.get('Gaze')
    level = "l" + str(data.get('Level'))
    step = data.get('Step')
    taskState = data.get('Task')
@@ -85,6 +88,7 @@ def be_gen():
    state.add(['affect',affect])
    state.add(['taskState',taskState])
    state.add(['verbal',verbal])
+   state.add(['gaze',gaze])
    state.add(['rapport',rapport])
    state.add(['level',level])
    state.add(['step',step])

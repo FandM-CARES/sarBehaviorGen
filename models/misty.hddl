@@ -96,7 +96,8 @@ CONFIRM LEVEL 2 & LEVEL 3;
         (SetEyes love)
         (PointandPause upwards both)
         (sayTextandPause "Yay! You got it all. You did great! Hooray") 
-        (PointandPause default both)))
+        (PointandPause default both)
+        (release-turn )))
 
 CONFIRM DEFUALT;
 
@@ -540,7 +541,7 @@ INSTRUCT LEVEL 4;
     :parameters()
     :task (instruct )
     :precondition (and
-        (needsToBe spin more ?dir)
+        (needsToBe ?piece spin more ?dir)
         (level l4))
     :ordered-subtasks(and
         (take-turn )
@@ -1017,8 +1018,7 @@ INSTRUCT DEFUALT;
         (SetEyes happy )
         (SayText Could you look to the colorful pieces on your left. )
         (Pause 1000 )
-        (LookInDirection left )
-        ))
+        (LookInDirection left )))
 
 
 (:method triangle
