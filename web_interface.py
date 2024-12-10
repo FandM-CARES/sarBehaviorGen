@@ -15,12 +15,12 @@ generator = None
 def start_robot():
    global generator
    ip = json.loads(request.data)
-   # robot = misty.misty_robot.Misty(ip)
-   robot = r.SocialRobot("127.0.0.1")
+   robot = misty.misty_robot.Misty(ip)
+   # robot = r.SocialRobot("127.0.0.1")
    # sarBehaviorGen/models/misty.hddl
    file = ['models/misty.hddl']
    generator = behavior_gen.SarBehaviorGenerator(robot, file)
-   # robot.startSkill()
+   robot.startSkill()
    
    if generator != None:
         return jsonify("Robot Started Successfully!")
