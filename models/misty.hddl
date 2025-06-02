@@ -1,3 +1,54 @@
+(:method tom
+    :parameters()
+    :task(tom )
+    :precondition()
+    :ordered-subtasks (and
+        (looking-around)
+        (Pause 100)
+        (LookInDirection down)
+        (PointAt downwards right)
+        (Pause 100)
+        (sayTextandPause "I see that you are putting ears on the cat")
+        (LookInDirection center)
+        (tiltHeadandPause left small)
+        (sayTextandPause "You think that the small red triangle can be an ear")
+        (Pause 100)
+        (sayTextandPause "You may need a smaller triangle")
+        (release-turn )))
+
+(:method tom
+    :parameters()
+    :task(tom )
+    :precondition()
+    :ordered-subtasks (and
+        (looking-around)
+        (Pause 100)
+        (LookInDirection down)
+        (PointAt downwards right)
+        (Pause 100)
+        (sayTextandPause "I see that you are putting ears on the cat")
+        (LookInDirection center)
+        (tiltHeadandPause left small)
+        (sayTextandPause "You think that the small red triangle can be an ear")
+        (Pause 100)
+        (sayTextandPause "You may need a smaller triangle")
+        (release-turn )))
+
+(:method tom
+    :parameters()
+    :task(notom )
+    :precondition()
+    :ordered-subtasks (and
+        (ShakeNo)
+        (Pause 100)
+        (lookAtPieces )
+        (Pause 100)
+        (sayTextandPause "I see that you just placed the red triangle")
+        (Pause 10)
+        (sayTextandPause "It does not look quite right")
+        (Pause 100)
+        (sayTextandPause "It looks like you need a smaller triangle")
+        (release-turn )))
 
 1 CONFIRM
 
