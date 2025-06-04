@@ -5,6 +5,7 @@ from flask_cors import CORS
 import json
 import behavior_gen
 import misty.misty_robot
+import nao.nao_robot
 import robot.social_robot as r
 
 web = Flask(__name__)
@@ -16,6 +17,7 @@ def start_robot():
    global generator
    ip = json.loads(request.data)
    robot = misty.misty_robot.Misty(ip)
+   # robot = nao.nao_robot.Nao(ip)
    # robot = r.SocialRobot("127.0.0.1")
    # sarBehaviorGen/models/misty.hddl
    file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
