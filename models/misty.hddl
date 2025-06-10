@@ -1,13 +1,38 @@
+
+(:method booklet
+    :parameters()
+    :task(booklet )
+    :precondition()
+    :ordered-subtasks (and
+        (PointAt default both)
+        (looking-around)
+        (Pause 100)
+        (sayTextandPause "Ok now look at the booklet on your left and find a picture you want to build")
+        (release-turn )))
+
+(:method help
+    :parameters()
+    :task(help )
+    :precondition()
+    :ordered-subtasks (and
+        (PointAt default both)
+        (LookInDirection down)
+        (Pause 100)
+        (sayTextandPause "Do you want any help with that?")
+        (release-turn )))
+
 (:method tom1
     :parameters()
     :task(tom1 )
     :precondition()
     :ordered-subtasks (and
         (PointAt default both)
+        (Pause 200)
         (looking-around)
         (Pause 100)
         (sayTextandPause "I see that you are putting ears on the cat")
         (release-turn )))
+
 
 
 (:method tom2
@@ -18,7 +43,7 @@
         (LookInDirection center)
         (Pause 100)
         (tiltHeadandPause left small)
-        (sayTextandPause "You think that the small red triangle can be an ear")
+        (sayTextandPause "You think that the red triangle can be an ear")
         (release-turn )))
 
 (:method tom3
@@ -1206,7 +1231,7 @@ INSTRUCT DEFUALT;
         (taskState unstarted)
         (script intro 16))
     :ordered-subtasks(and
-        (SayText "Ok now could you flip over that paper to see the picture." )
+        (SayText "Ok now could you flip over that paper to see the pictures." )
         (lookAtPicture)
         (LookInDirection center )))
 
@@ -1218,6 +1243,8 @@ INSTRUCT DEFUALT;
         (script intro 17))
     :ordered-subtasks(and
         (SayText "using all of the pieces, you should build something like the picture!" )
+          (Pause 1000 )
+          (SayText "I will be here to help you.")
         (LookInDirection left )
         (Pause 1000 )
         (LookInDirection center )))
@@ -1229,7 +1256,7 @@ INSTRUCT DEFUALT;
         (taskState unstarted)
         (script intro 18))
     :ordered-subtasks(and
-        (setEyesandPause happy)
+    
         (tiltHead left small)
         (sayTextandPause "I will be here to help you.")
         (release-turn)))

@@ -20,7 +20,7 @@ def start_robot():
    # robot = nao.nao_robot.Nao(ip)
    # robot = r.SocialRobot("127.0.0.1")
    # sarBehaviorGen/models/misty.hddl
-   file = ['/Users/vuhoanganh/Documents/BehaviorGen/sarBehaviorGen/models/misty.hddl']
+   file = ['/cps/home/aadylbek/Name/sarBehaviorGen/models/misty.hddl']
    generator = behavior_gen.SarBehaviorGenerator(robot, file)
    robot.startSkill()
    
@@ -136,4 +136,6 @@ To do list:
    https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.atatus.com%2Fblog%2Fpowerful-css-selectors%2F&psig=AOvVaw2LhKFtJf1faJrIzVDKt1sn&ust=1733259013117000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDM85L7iYoDFQAAAAAdAAAAABBR
 
    check-x is having logic problem, because it is asking for z, it considers the 2nd piece z
+
+   followScript might not be working because of setEyes
     '''
