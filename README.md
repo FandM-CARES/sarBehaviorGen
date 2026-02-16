@@ -68,6 +68,7 @@ The `general.hddl` file describes a set of reusable behaviors.  This includes th
 Basic turn-taking strategies are also included.  This includes a collectin of behavior for `take-turn` and `release-turn`.
 
 A variety of other resuable behaviors are also provided.  This includes behaviors to wave, shake head, look around, and more.  
+
 Finally, the file describes the basic actions that are available:
 - SayText
 - PointAt
@@ -80,8 +81,14 @@ All of these actions are performed on the robot as non-blocking calls.  As a res
 
 In the models directory, other hddl files may be found that extend the general behaviors to provide assistance for a specific task.  For example, the `tangram.hddl` file is used to generate the necessary behaviors for supporting a child complete a tangram puzzle [\[1\](https://ojs.aaai.org/index.php/AAAI-SS/article/download/27674/27447).
 
+## Robot Middleware
+
+To perform the behaviors on the robot, each robot has middleware to support executing a list of actions on the robot.  Middleware for the Misty and NAO robots are currently supported.  Addtionally, the is a virtual robot for testing that only prints the actions to the terminal.
+
+The middleware for each robot adheres to a [common API](https://github.com/FandM-CARES/sarBehaviorGen/docs/robot_middleware_API.pdf) that defines the list of supported actions and the required syntax.  By having a common API, the generated behaviors are similar across the different platforms \[2\].  
+
 ## References
 
 \[1\] Yang, Y., Langer, A., Howard, L., Marshall, P. J., & Wilson, J. R. (2023). [Towards an Ontology for Generating Behaviors for Socially Assistive Robots Helping Young Children.](https://ojs.aaai.org/index.php/AAAI-SS/article/download/27674/27447) In *Proceedings of the AAAI Symposium Series* (Vol. 2, No. 1, pp. 213-218).
 
-\[2\] Wilson, J. R. & Yang, Y. (2024). Software Architecture to Generate Assistive Behaviors for Social Robots. In *HRI ’24 Companion*.
+\[2\] Wilson, J. R. & Yang, Y. (2024). [Software Architecture to Generate Assistive Behaviors for Social Robots](https://fandm-cares.github.io/assets/pdf/wilsonyang2024software.pdf). In *HRI ’24 Companion*.
